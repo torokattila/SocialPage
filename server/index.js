@@ -1,4 +1,5 @@
 const express = require("express");
+const router = express.Router();
 const app = express();
 require("dotenv").config({ path: __dirname + "/.env" });
 const cors = require("cors");
@@ -7,11 +8,12 @@ const bodyParser = require("body-parser");
 const bcrypt = require("bcryptjs");
 const mysql = require("mysql");
 const { sign } = require("jsonwebtoken");
+const { validateToken } = require('./middlewares/AuthMiddleware');
 
 app.use(express.json());
 app.use(
 	cors({
-		origin: ["http://localhost:3001"],
+		origin: ["http://localhost:3000"],
 		methods: ["GET", "POST", "PUT", "DELETE"]
 	})
 );
@@ -73,6 +75,10 @@ app.post("/api/registeruser", (req, res) => {
 	);
 });
 
+router.get('/auth', validateToken, (req, res) => {
+	res.json(req.user);
+});
+
 app.post("/api/loginuser", (req, res) => {
 	const { username, password } = req.body;
 
@@ -86,7 +92,9 @@ app.post("/api/loginuser", (req, res) => {
 
 		if (result.length > 0) {
 			bcrypt.compare(password, result[0].password, (error, response) => {
-				if (response) {
+				if (!response) {
+					res.json({ error: "Wrong username or password!" });
+				} else if (response) {
 					const accessToken = sign(
 						{ username: result[0].username, id: result[0].id },
 						"tOkEnSeCrEt"
