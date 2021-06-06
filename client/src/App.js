@@ -3,8 +3,9 @@ import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 import { AuthContext } from "./helpers/AuthContext";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Registration from './pages/Registration';
-import Login from './pages/Login';
+import Registration from "./pages/Registration";
+import Login from "./pages/Login";
+import Home from './pages/Home';
 
 function App() {
 	const [authState, setAuthState] = useState({
@@ -36,12 +37,24 @@ function App() {
 	return (
 		<div className="App">
 			<AuthContext.Provider value={{ authState, setAuthState }}>
-        <Router>
-          { !authState.status && (
-            <Login />
-          )}
-        </Router>
-      </AuthContext.Provider>
+				<Router>
+					<Switch>
+					{!authState.status ? (
+						<>
+						<Login />
+						<Route path="/login" exact component={Login} />
+						<Route
+							path="/registration"
+							exact
+							component={Registration}
+						/>
+						</>
+					) : (
+						<Route path="/" exact component={Home} />
+					)}
+					</Switch>
+				</Router>
+			</AuthContext.Provider>
 		</div>
 	);
 }
