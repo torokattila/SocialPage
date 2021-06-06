@@ -28,143 +28,233 @@ body {
 		rgba(96, 221, 142, 1) 11.2%,
 		rgba(24, 138, 141, 1) 91.1%
 	);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+		Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 .loginCard {
-    display: flex;
-    flex-direction: row;
+	display: flex;
+	flex-direction: row;
 	width: 1200px;
 	height: 650px;
 	background-color: #fff;
-    border-radius: 30px;
-	box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+	border-radius: 30px;
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+		rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 }
 
 .loginCardLeftSide {
-    display: flex;
-    flex-direction: column;
-    width: 65%;
-    background-color: #fff;
-    border-top-left-radius: 30px;
-    border-bottom-left-radius: 30px;
+	display: flex;
+	flex-direction: column;
+	width: 65%;
+	background-color: #fff;
+	border-top-left-radius: 30px;
+	border-bottom-left-radius: 30px;
 }
 
 .headerDiv {
-    text-align: center;
-    margin-top: 50px;
+	text-align: center;
+	margin-top: 50px;
 }
 
 .headerDiv h1 {
-    color: #33BE77;
-    font-weight: 900;
+	color: #33be77;
+	font-weight: 900;
 }
 
 .headerDiv hr {
-    width: 60px;
-    height: 3px;
-    border: none;
-    background: #33BE77;
+	width: 60px;
+	height: 3px;
+	border: none;
+	background: #33be77;
 }
 
 .loginCardRightSide {
-    background-image: linear-gradient( 109.6deg,  rgba(102,203,149,1) 11.2%, rgba(39,210,175,1) 98.7% );
-    width: 35%;
-    border-top-right-radius: 30px;
-    border-bottom-right-radius: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+	background-image: linear-gradient(
+		109.6deg,
+		rgba(102, 203, 149, 1) 11.2%,
+		rgba(39, 210, 175, 1) 98.7%
+	);
+	width: 35%;
+	border-top-right-radius: 30px;
+	border-bottom-right-radius: 30px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .rightHeaderDiv {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    font-size: 12px;
-    color: #fff;
-    font-weight: bold;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	font-size: 12px;
+	color: #fff;
+	font-weight: bold;
 }
 
 .rightHeaderDiv button {
+	cursor: pointer;
+	margin-top: 20px;
+	border-radius: 50px;
+	background: transparent;
+	border: 1px solid #fff;
+	color: #fff;
+	padding: 15px;
+	width: 220px;
+	font-size: 20px;
+	transition: 0.4s;
+}
+
+.rightHeaderDiv button:hover {
+	background: #fff;
+	transition: 0.4s;
+	color: #33be77;
+	box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.loginInputsDiv {
+	margin-top: 50px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+.inputLabel {
+	position: relative;
+	margin-right: 350px;
+	color: #33be77;
+	font-weight: bold;
+}
+
+.loginInput {
+	width: 400px;
+	background: #fff;
+	padding: 20px;
+	border: 1px solid silver;
+	margin: 20px;
+	font-size: 20px;
+	border-radius: 5px;
+	transition: 0.2s;
+}
+
+.loginInput:focus {
+	transition: 0.2s;
+	outline: none;
+	border: 2px solid #33be77;
+	border-radius: 5px !important;
+}
+
+.signInButton {
+	border: none;
+	margin-top: 40px;
+	cursor: pointer;
+	border-radius: 50px;
+	padding: 17px;
+	width: 220px;
+	font-size: 18px;
+	transition: 0.4s;
+	color: #fff;
+	font-weight: bold;
+	background-color: #36c977;
+	box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+	transition: 0.4s;
+}
+
+.signInButton:hover {
+	transition: 0.4s;
+	background-color: #2caf67;
+	box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.185);
+}
+
+h3 {
+	margin: 0;
+	margin-left: 80px;
+	margin-top: -20px;
+	padding: 0;
+	color: #ee4b2b;
+}
+
+.homePageContainer, .createPostContainer {
+    margin: 0;
+    width: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+		Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.homePageContainer h1, .createPostContainer h1 {
+    margin: 0;
+    color: #fff;
+    text-align: right;
+    margin-right: 70px;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+    justify-content: right;
+    margin: 0;
+	height: 100px;
+	width: 100%;
+	background-image: linear-gradient(
+		109.6deg,
+		rgba(96, 221, 142, 1) 11.2%,
+		rgba(24, 138, 141, 1) 91.1%
+	);
+}
+
+.nameAndLogout {
+    margin-right: 100px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.logoutButton {
+    border: none;
+    padding: 15px;
+    width: 150px;
     cursor: pointer;
-    margin-top: 20px;
     border-radius: 50px;
     background: transparent;
     border: 1px solid #fff;
     color: #fff;
-    padding: 15px;
-    width: 220px;
-    font-size: 20px;
+    font-size: 15px;
+    font-weight: bold;
     transition: 0.4s;
+    text-transform: uppercase;
 }
 
-.rightHeaderDiv button:hover {
+.logoutButton:hover {
+    transition: 0.4s;
     background: #fff;
-    transition: 0.4s;
-    color: #33BE77;
-    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    color: #278A8D;
 }
 
-.loginInputsDiv {
-    margin-top: 50px;
+.homeAndCreatePost {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-.inputLabel {
+    right: 1000px;
     position: relative;
-    margin-right: 350px;
-    color: #33BE77;
-    font-weight: bold;
+    align-content: space-between;
+    align-items: center;
+    justify-content: center;
 }
 
-.loginInput {
-    width: 400px;
-    background: #fff;
-    padding: 20px;
-    border: 1px solid silver;
-    margin: 20px;
-    font-size: 20px;
-    border-radius: 5px;
-    transition: 0.2s;
-}
-
-.loginInput:focus {
-    transition: 0.2s;
-    outline: none;
-    border: 2px solid #33BE77;
-    border-radius: 5px!important;
-}
-
-.signInButton {
-    border: none;
-    margin-top: 40px;
-    cursor: pointer;
-    border-radius: 50px;
-    padding: 17px;
-    width: 220px;
-    font-size: 18px;
-    transition: 0.4s;
+.links {
+    text-decoration: none!important;
     color: #fff;
+    margin-right: 60px;
     font-weight: bold;
-    background-color: #36C977;
-    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    font-size: 20px;
     transition: 0.4s;
 }
 
-.signInButton:hover {
+.links:hover {
     transition: 0.4s;
-    background-color: #2caf67;
-    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.185);
+    color: teal;
 }
 
-h3 {
-    margin: 0;
-    margin-left: 80px;
-    margin-top: -20px;
-    padding: 0;
-    color: #EE4B2B;
+.homeIcon {
+    color: #fff;
 }

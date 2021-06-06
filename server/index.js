@@ -75,7 +75,7 @@ app.post("/api/registeruser", (req, res) => {
 	);
 });
 
-router.get('/auth', validateToken, (req, res) => {
+app.get('/auth', validateToken, (req, res) => {
 	res.json(req.user);
 });
 

@@ -6,6 +6,7 @@ import axios from "axios";
 import Registration from "./pages/Registration";
 import Login from "./pages/Login";
 import Home from './pages/Home';
+import CreatePost from './pages/CreatePost';
 
 function App() {
 	const [authState, setAuthState] = useState({
@@ -50,7 +51,10 @@ function App() {
 						/>
 						</>
 					) : (
+						<>
 						<Route path="/" exact component={Home} />
+						<Route path="/createpost" exact component={CreatePost} />
+						</>
 					)}
 					</Switch>
 				</Router>
