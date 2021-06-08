@@ -114,6 +114,36 @@ app.post("/api/loginuser", (req, res) => {
 	});
 });
 
+app.post('/createpost', validateToken, (req, res) => {
+	const post = req.body;
+	const userId = req.user.id;
+
+	const insertQuery = "INSERT INTO post SET user_id = ?, title = ?, content = ?, created_at = NOW();";
+
+	db.query(insertQuery, [userId, post.title, post.content], (err, result) => {
+		if (err) {
+			console.log(err);
+			res.json({ error: err });
+		} else if (result) {
+			res.json({ success: "Created the post!" });
+		}
+	});
+});
+
+app.get('/getposts', validateToken, (req, res) => {
+	const userId = req.user.id;
+	const selectPostsQuery = "SELECT * FROM post WHERE user_id = ? ORDER BY created_at DESC;";
+
+	db.query(selectPostsQuery, userId, (err, result) => {
+		if (err) {
+			console.log(err);
+			res.json({ error: err });
+		} else if (result) {
+			res.json({ listOfPosts: JSON.parse(JSON.stringify(result)) });
+		}
+	});
+});
+
 app.listen(PORT, () => {
 	console.log(`App is listening on PORT ${PORT}`);
 });

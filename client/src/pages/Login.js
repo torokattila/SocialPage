@@ -37,7 +37,7 @@ function Login() {
 						<hr />
 					</div>
 					<div className="loginInputsDiv">
-						<label for="username" className="inputLabel">
+						<label htmlFor="username" className="inputLabel">
 							Username:
 						</label>
 						<input
@@ -49,7 +49,7 @@ function Login() {
 							}}
 						/>
 
-						<label for="password" className="inputLabel">
+						<label htmlFor="password" className="inputLabel">
 							Password:
 						</label>
 						<input

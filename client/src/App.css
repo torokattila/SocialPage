@@ -169,7 +169,7 @@ body {
 
 h3 {
 	margin: 0;
-	margin-left: 80px;
+	margin-left: 120px;
 	margin-top: -20px;
 	padding: 0;
 	color: #ee4b2b;
@@ -257,4 +257,86 @@ h3 {
 
 .homeIcon {
     color: #fff;
+}
+
+.createPostFormDiv {
+	width: 700px;
+	height: auto;
+	padding: 80px;
+	margin: 0 auto;
+	margin-top: 100px;
+	box-shadow: 0 5px 10px rgba(159, 165, 190, 0.274), 0 15px 40px rgba(166,173,201,.2);
+	border-radius: 20px;
+	display: flex;
+	justify-content: center;
+}
+
+.createPostContainerForm {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	width: 500px;
+	height: auto;
+}
+
+.createPostContainerForm label {
+	margin-top: 50px;
+	color: #33be77;
+	font-weight: bold;
+	font-size: 20px;
+}
+
+.createPostContainerForm #inputCreatePost {
+	border: none;
+	padding: 15px;
+	font-size: 20px;
+	border-bottom: 1px solid silver;
+	outline: none;
+	transition: 0.2s;
+}
+
+.createPostContainerForm #inputCreatePost:focus {
+	border-bottom: 2px solid #2caf67;
+	transition: 0.2s;
+}
+
+.createPostContainerForm button {
+	margin: 0 auto;
+	margin-top: 60px;
+	border: none;
+	padding: 20px;
+	width: 200px;
+	cursor: pointer;
+	border-radius: 50px;
+	background-image: radial-gradient( circle 862px at 6% 18%,  rgba(21,219,149,1) 9.4%, rgba(26,35,160,1) 83.6% );
+	color: #fff;
+	font-weight: bold;
+	font-size: 15px;
+	text-transform: uppercase;
+	box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+	transition: 0.4s;
+}
+
+.createPostContainerForm button:hover {
+	transition: 0.4s!important;
+	box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.185);
+	opacity: 0.8;
+}
+
+.postDiv {
+	width: 500px;
+	height: 300px;
+	border-radius: 20px;
+	box-shadow: 0 5px 10px rgba(159, 165, 190, 0.274), 0 15px 40px rgba(166,173,201,.2);
+	margin: 0 auto;
+	margin-top: 50px;
+	margin-bottom: 50px;
+	padding: 50px;
+	display: flex;
+	flex-direction: column;
+	transition: 0.2s;
+}
+
+.postDiv:hover {
+	box-shadow: 0 5px 10px rgba(154, 160, 185, 0.514), 0 15px 40px rgba(166, 173, 201, 0.336);
 }
