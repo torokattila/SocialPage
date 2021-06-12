@@ -8,7 +8,7 @@ const bodyParser = require("body-parser");
 const bcrypt = require("bcryptjs");
 const mysql = require("mysql");
 const { sign } = require("jsonwebtoken");
-const { validateToken } = require('./middlewares/AuthMiddleware');
+const { validateToken } = require("./middlewares/AuthMiddleware");
 
 app.use(express.json());
 app.use(
@@ -75,7 +75,7 @@ app.post("/api/registeruser", (req, res) => {
 	);
 });
 
-app.get('/auth', validateToken, (req, res) => {
+app.get("/auth", validateToken, (req, res) => {
 	res.json(req.user);
 });
 
@@ -100,11 +100,11 @@ app.post("/api/loginuser", (req, res) => {
 						"tOkEnSeCrEt"
 					);
 
-                    res.json({
-                        token: accessToken,
-                        username: username,
-                        id: result[0].id
-                    });
+					res.json({
+						token: accessToken,
+						username: username,
+						id: result[0].id
+					});
 				}
 			});
 		} else {
@@ -114,32 +114,108 @@ app.post("/api/loginuser", (req, res) => {
 	});
 });
 
-app.post('/createpost', validateToken, (req, res) => {
+app.post("/createpost", validateToken, (req, res) => {
 	const post = req.body;
 	const userId = req.user.id;
+	const username = req.user.username;
 
-	const insertQuery = "INSERT INTO post SET user_id = ?, title = ?, content = ?, created_at = NOW();";
+	const insertQuery =
+		"INSERT INTO post SET user_id = ?, title = ?, content = ?, created_at = NOW(), username = ?;";
 
-	db.query(insertQuery, [userId, post.title, post.content], (err, result) => {
-		if (err) {
-			console.log(err);
-			res.json({ error: err });
-		} else if (result) {
-			res.json({ success: "Created the post!" });
+	db.query(
+		insertQuery,
+		[userId, post.title, post.content, username],
+		(err, result) => {
+			if (err) {
+				console.log(err);
+				res.json({ error: err });
+			} else if (result) {
+				res.json({ success: "Created the post!" });
+			}
 		}
-	});
+	);
 });
 
-app.get('/getposts', validateToken, (req, res) => {
+app.get("/getposts", validateToken, (req, res) => {
 	const userId = req.user.id;
-	const selectPostsQuery = "SELECT * FROM post WHERE user_id = ? ORDER BY created_at DESC;";
+	const selectPostsQuery =
+		"SELECT * FROM post WHERE user_id = ? ORDER BY created_at DESC;";
+	const selectLikesQuery = "SELECT * FROM likes WHERE user_id = ?;";
 
 	db.query(selectPostsQuery, userId, (err, result) => {
 		if (err) {
 			console.log(err);
 			res.json({ error: err });
 		} else if (result) {
-			res.json({ listOfPosts: JSON.parse(JSON.stringify(result)) });
+			db.query(selectLikesQuery, userId, (likeError, likeResult) => {
+				let listOfPosts = JSON.parse(JSON.stringify(result));
+				const likedPosts = JSON.parse(JSON.stringify(likeResult));
+				let belongingLike = [];
+
+				likedPosts.forEach(like => {
+					listOfPosts = listOfPosts.map(row => {
+						if (like.post_id == row.post_id) {
+							belongingLike.push(like);
+						} else {
+							belongingLike = [];
+						}
+
+						return Object.assign({}, row, {
+							Likes: belongingLike
+						});
+					});
+				});
+
+				res.json({ listOfPosts: listOfPosts, likedPosts: likedPosts });
+			});
+		}
+	});
+});
+
+app.post("/like", validateToken, (req, res) => {
+	const { postId } = req.body;
+	const userId = req.user.id;
+
+	const selectTheLike =
+		"SELECT * FROM likes WHERE post_id = ? AND user_id = ?;";
+
+	db.query(selectTheLike, [postId, userId], (err, result) => {
+		if (result.length > 0) {
+			const deleteQuery =
+				"DELETE FROM likes WHERE post_id = ? AND user_id = ?;";
+
+			db.query(
+				deleteQuery,
+				[postId, userId],
+				(deleteError, deleteResult) => {
+					if (deleteError) {
+						console.log(deleteError);
+						res.json({
+							error: "There was an error with the dislike!"
+						});
+					} else if (deleteResult) {
+						res.json({ isLiked: false });
+					}
+				}
+			);
+		} else {
+			const insertQuery =
+				"INSERT INTO likes SET post_id = ?, user_id = ?;";
+
+			db.query(
+				insertQuery,
+				[postId, userId],
+				(insertError, insertResult) => {
+					if (insertError) {
+						console.log(insertError);
+						res.json({
+							error: "There was an error with the like!"
+						});
+					} else if (insertResult) {
+						res.json({ isLiked: true });
+					}
+				}
+			);
 		}
 	});
 });

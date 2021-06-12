@@ -175,26 +175,28 @@ h3 {
 	color: #ee4b2b;
 }
 
-.homePageContainer, .createPostContainer {
-    margin: 0;
-    width: 100%;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+.homePageContainer,
+.createPostContainer {
+	margin: 0;
+	width: 100%;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
 		Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-.homePageContainer h1, .createPostContainer h1 {
-    margin: 0;
-    color: #fff;
-    text-align: right;
-    margin-right: 70px;
+.homePageContainer h1,
+.createPostContainer h1 {
+	margin: 0;
+	color: #fff;
+	text-align: right;
+	margin-right: 70px;
 }
 
 .navbar {
-    display: flex;
-    align-items: center;
-    flex-direction: row-reverse;
-    justify-content: right;
-    margin: 0;
+	display: flex;
+	align-items: center;
+	flex-direction: row-reverse;
+	justify-content: right;
+	margin: 0;
 	height: 100px;
 	width: 100%;
 	background-image: linear-gradient(
@@ -205,58 +207,58 @@ h3 {
 }
 
 .nameAndLogout {
-    margin-right: 100px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+	margin-right: 100px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
 }
 
 .logoutButton {
-    border: none;
-    padding: 15px;
-    width: 150px;
-    cursor: pointer;
-    border-radius: 50px;
-    background: transparent;
-    border: 1px solid #fff;
-    color: #fff;
-    font-size: 15px;
-    font-weight: bold;
-    transition: 0.4s;
-    text-transform: uppercase;
+	border: none;
+	padding: 15px;
+	width: 150px;
+	cursor: pointer;
+	border-radius: 50px;
+	background: transparent;
+	border: 1px solid #fff;
+	color: #fff;
+	font-size: 15px;
+	font-weight: bold;
+	transition: 0.4s;
+	text-transform: uppercase;
 }
 
 .logoutButton:hover {
-    transition: 0.4s;
-    background: #fff;
-    color: #278A8D;
+	transition: 0.4s;
+	background: #fff;
+	color: #278a8d;
 }
 
 .homeAndCreatePost {
-    display: flex;
-    right: 1000px;
-    position: relative;
-    align-content: space-between;
-    align-items: center;
-    justify-content: center;
+	display: flex;
+	right: 1000px;
+	position: relative;
+	align-content: space-between;
+	align-items: center;
+	justify-content: center;
 }
 
 .links {
-    text-decoration: none!important;
-    color: #fff;
-    margin-right: 60px;
-    font-weight: bold;
-    font-size: 20px;
-    transition: 0.4s;
+	text-decoration: none !important;
+	color: #fff;
+	margin-right: 60px;
+	font-weight: bold;
+	font-size: 20px;
+	transition: 0.4s;
 }
 
 .links:hover {
-    transition: 0.4s;
-    color: teal;
+	transition: 0.4s;
+	color: teal;
 }
 
 .homeIcon {
-    color: #fff;
+	color: #fff;
 }
 
 .createPostFormDiv {
@@ -265,7 +267,8 @@ h3 {
 	padding: 80px;
 	margin: 0 auto;
 	margin-top: 100px;
-	box-shadow: 0 5px 10px rgba(159, 165, 190, 0.274), 0 15px 40px rgba(166,173,201,.2);
+	box-shadow: 0 5px 10px rgba(159, 165, 190, 0.274),
+		0 15px 40px rgba(166, 173, 201, .2);
 	border-radius: 20px;
 	display: flex;
 	justify-content: center;
@@ -308,7 +311,11 @@ h3 {
 	width: 200px;
 	cursor: pointer;
 	border-radius: 50px;
-	background-image: radial-gradient( circle 862px at 6% 18%,  rgba(21,219,149,1) 9.4%, rgba(26,35,160,1) 83.6% );
+	background-image: radial-gradient(
+		circle 862px at 6% 18%,
+		rgba(21, 219, 149, 1) 9.4%,
+		rgba(26, 35, 160, 1) 83.6%
+	);
 	color: #fff;
 	font-weight: bold;
 	font-size: 15px;
@@ -318,7 +325,7 @@ h3 {
 }
 
 .createPostContainerForm button:hover {
-	transition: 0.4s!important;
+	transition: 0.4s !important;
 	box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.185);
 	opacity: 0.8;
 }
@@ -327,7 +334,8 @@ h3 {
 	width: 500px;
 	height: 300px;
 	border-radius: 20px;
-	box-shadow: 0 5px 10px rgba(159, 165, 190, 0.274), 0 15px 40px rgba(166,173,201,.2);
+	box-shadow: 0 5px 10px rgba(159, 165, 190, 0.274),
+		0 15px 40px rgba(166, 173, 201, .2);
 	margin: 0 auto;
 	margin-top: 50px;
 	margin-bottom: 50px;
@@ -335,8 +343,54 @@ h3 {
 	display: flex;
 	flex-direction: column;
 	transition: 0.2s;
+	color: #fff;
+	font-weight: bold;
+	background-image: linear-gradient(
+		109.6deg,
+		rgba(102, 203, 149, 1) 11.2%,
+		rgba(39, 210, 175, 1) 98.7%
+	);
 }
 
 .postDiv:hover {
-	box-shadow: 0 5px 10px rgba(154, 160, 185, 0.514), 0 15px 40px rgba(166, 173, 201, 0.336);
+	box-shadow: 0 5px 10px rgba(154, 160, 185, 0.514),
+		0 15px 40px rgba(148, 155, 180, 0.685);
+}
+
+.postTitle {
+	flex: 10%;
+	font-size: 30px;
+	display: flex;
+	justify-content: space-between;
+}
+
+.postContent {
+	font-size: 22px;
+	flex: 95%;
+	display: grid;
+	align-items: center;
+	justify-content: center;
+}
+
+.postFooter {
+	flex: 20%;
+	font-size: 20px;
+	display: flex;
+	position: relative;
+	flex-direction: column;	
+}
+
+.postDate {
+	margin-top: 10px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.likeButton {
+	position: absolute;
+	right: 10px;
+	bottom: 5px!important;
+	font-size: 50px!important;
+	cursor: pointer;
 }
