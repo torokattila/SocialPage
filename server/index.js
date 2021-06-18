@@ -138,35 +138,55 @@ app.post("/createpost", validateToken, (req, res) => {
 
 app.get("/getposts", validateToken, (req, res) => {
 	const userId = req.user.id;
-	const selectPostsQuery =
-		"SELECT * FROM post WHERE user_id = ? ORDER BY created_at DESC;";
+	const selectPostsQuery = "SELECT post.post_id, post.user_id, post.title, post.content, post.created_at, post.username, IFNULL(GROUP_CONCAT(likes.post_id), '') AS Likes, IFNULL(GROUP_CONCAT(likes.user_id), '') AS like_user_id FROM post AS post LEFT OUTER JOIN likes AS likes ON post.post_id = likes.post_id GROUP BY post_id ORDER BY post.created_at DESC;";
 	const selectLikesQuery = "SELECT * FROM likes WHERE user_id = ?;";
 
-	db.query(selectPostsQuery, userId, (err, result) => {
+	db.query(selectPostsQuery, (err, result) => {
 		if (err) {
 			console.log(err);
 			res.json({ error: err });
 		} else if (result) {
+			var listOfPosts = JSON.parse(JSON.stringify(result));
+			var likedPosts = [];
+
+			listOfPosts = listOfPosts.map(post => {
+				post.Likes =
+					post.Likes == ""
+						? []
+						: post.Likes.includes(",")
+							? post.Likes.split(",")
+							: [post.Likes];
+
+				post.like_user_id =
+					post.like_user_id == ""
+						? []
+						: post.like_user_id.includes(",")
+							? post.like_user_id
+									.split(",")
+									.map(userId => Number(userId))
+							: [Number(post.like_user_id)];
+
+				return post;
+			});
+
 			db.query(selectLikesQuery, userId, (likeError, likeResult) => {
-				let listOfPosts = JSON.parse(JSON.stringify(result));
-				const likedPosts = JSON.parse(JSON.stringify(likeResult));
-				let belongingLike = [];
+				if (likeResult.length > 0) {
+					likedPosts = JSON.parse(JSON.stringify(likeResult));
+				} /*else {
+					listOfPosts = listOfPosts.map(post => {
+						post.Likes = [];
+						post.like_user_id = [];
 
-				likedPosts.forEach(like => {
-					listOfPosts = listOfPosts.map(row => {
-						if (like.post_id == row.post_id) {
-							belongingLike.push(like);
-						} else {
-							belongingLike = [];
-						}
-
-						return Object.assign({}, row, {
-							Likes: belongingLike
-						});
+						return post;
 					});
-				});
 
-				res.json({ listOfPosts: listOfPosts, likedPosts: likedPosts });
+					likedPosts = [];
+				}*/
+
+				res.json({
+					listOfPosts: listOfPosts,
+					likedPosts: likedPosts
+				});
 			});
 		}
 	});

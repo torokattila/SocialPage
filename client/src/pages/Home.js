@@ -51,6 +51,7 @@ function Home() {
 				setListOfPosts(
 					listOfPosts.map(post => {
 						if (post.post_id === postId) {
+
 							if (response.data.isLiked) {
 								return { ...post, Likes: [...post.Likes, 0] };
 							} else {
@@ -65,7 +66,6 @@ function Home() {
 					})
 				);
 				
-				console.log(likedPosts);
 				if (likedPosts.includes(postId)) {
 					setLikedPosts(
 						likedPosts.filter(id => {
