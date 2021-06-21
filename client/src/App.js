@@ -7,6 +7,9 @@ import Registration from "./pages/Registration";
 import Login from "./pages/Login";
 import Home from './pages/Home';
 import CreatePost from './pages/CreatePost';
+import PageNotFound from './pages/PageNotFound';
+import Profile from './pages/Profile';
+import ChangePassword from './pages/ChangePassword';
 
 function App() {
 	const [authState, setAuthState] = useState({
@@ -43,17 +46,19 @@ function App() {
 					{!authState.status ? (
 						<>
 						<Login />
-						<Route path="/login" exact component={Login} />
+						<Route exact path="/login" component={Login} />
 						<Route
-							path="/registration"
 							exact
+							path="/registration"
 							component={Registration}
 						/>
 						</>
 					) : (
 						<>
-						<Route path="/" exact component={Home} />
-						<Route path="/createpost" exact component={CreatePost} />
+						<Route exact path="/" component={Home} />
+						<Route exact path="/createpost" component={CreatePost} />
+						<Route exact path="/profile/:id" component={Profile} />
+						<Route exact path="/changepassword" component={ChangePassword} />
 						</>
 					)}
 					</Switch>

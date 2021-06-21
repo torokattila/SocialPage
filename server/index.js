@@ -138,7 +138,8 @@ app.post("/createpost", validateToken, (req, res) => {
 
 app.get("/getposts", validateToken, (req, res) => {
 	const userId = req.user.id;
-	const selectPostsQuery = "SELECT post.post_id, post.user_id, post.title, post.content, post.created_at, post.username, IFNULL(GROUP_CONCAT(likes.post_id), '') AS Likes, IFNULL(GROUP_CONCAT(likes.user_id), '') AS like_user_id FROM post AS post LEFT OUTER JOIN likes AS likes ON post.post_id = likes.post_id GROUP BY post_id ORDER BY post.created_at DESC;";
+	const selectPostsQuery =
+		"SELECT post.post_id, post.user_id, post.title, post.content, post.created_at, post.username, IFNULL(GROUP_CONCAT(likes.post_id), '') AS Likes, IFNULL(GROUP_CONCAT(likes.user_id), '') AS like_user_id FROM post AS post LEFT OUTER JOIN likes AS likes ON post.post_id = likes.post_id GROUP BY post_id ORDER BY post.created_at DESC;";
 	const selectLikesQuery = "SELECT * FROM likes WHERE user_id = ?;";
 
 	db.query(selectPostsQuery, (err, result) => {
@@ -233,6 +234,119 @@ app.post("/like", validateToken, (req, res) => {
 						});
 					} else if (insertResult) {
 						res.json({ isLiked: true });
+					}
+				}
+			);
+		}
+	});
+});
+
+app.get("/info/:id", (req, res) => {
+	const userId = req.params.id;
+
+	const userInfoQuery = "SELECT id, username FROM user WHERE id = ?";
+
+	db.query(userInfoQuery, userId, (error, result) => {
+		if (error) {
+			console.log(error);
+			res.json({
+				error: "There was an error with getting the user infos!"
+			});
+		} else if (result.length > 0) {
+			res.json(result);
+		}
+	});
+});
+
+app.get("/post/byUserId/:id", (req, res) => {
+	const userId = req.params.id;
+
+	const selectPostsQuery =
+		"SELECT post.post_id, post.user_id, post.title, post.content, post.created_at, post.username, IFNULL(GROUP_CONCAT(likes.post_id), '') AS Likes, IFNULL(GROUP_CONCAT(likes.user_id), '') AS like_user_id FROM post AS post LEFT OUTER JOIN likes AS likes ON post.post_id = likes.post_id WHERE post.user_id = ? GROUP BY post_id ORDER BY post.created_at DESC;";
+
+	db.query(selectPostsQuery, userId, (err, result) => {
+		if (err) {
+			console.log(err);
+			res.json({ error: err });
+		} else if (result) {
+			var listOfPosts = JSON.parse(JSON.stringify(result));
+
+			listOfPosts = listOfPosts.map(post => {
+				post.Likes =
+					post.Likes == ""
+						? []
+						: post.Likes.includes(",")
+							? post.Likes.split(",")
+							: [post.Likes];
+
+				post.like_user_id =
+					post.like_user_id == ""
+						? []
+						: post.like_user_id.includes(",")
+							? post.like_user_id
+									.split(",")
+									.map(userId => Number(userId))
+							: [Number(post.like_user_id)];
+
+				return post;
+			});
+
+			res.json(listOfPosts);
+		}
+	});
+});
+
+app.put("/changepassword", validateToken, (req, res) => {
+	const { oldPassword, newPassword } = req.body;
+	const username = req.user.username;
+	const getUserQuery = "SELECT * FROM user WHERE username = ?";
+
+	db.query(getUserQuery, username, (err, result) => {
+		if (err) {
+			console.log(err);
+			res.json({ error: "There is no user with this username!" });
+		} else if (result.length > 0) {
+			bcrypt.compare(
+				oldPassword,
+				result[0].password,
+				(compareError, compareResult) => {
+					if (compareError) {
+						console.log(compareError);
+						res.json({
+							error: "There was an error with your old password!"
+						});
+					} else if (compareResult) {
+						bcrypt.hash(
+							newPassword,
+							saltRounds,
+							(hashError, hashedPassword) => {
+								if (hashError) {
+									console.log(hashError);
+									res.json({ error: hashError });
+								}
+
+								const updatePasswordQuery =
+									"UPDATE user SET password = ? WHERE username = ?";
+
+								db.query(
+									updatePasswordQuery,
+									[hashedPassword, username],
+									(updateError, updateResult) => {
+										if (updateError) {
+											console.log(updateError);
+											res.json({
+												error:
+													"There was an error with the update, try again please!"
+											});
+										} else if (updateResult) {
+											res.json(
+												"Password updated successfully!"
+											);
+										}
+									}
+								);
+							}
+						);
 					}
 				}
 			);

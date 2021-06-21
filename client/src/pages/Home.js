@@ -93,8 +93,8 @@ function Home() {
 						</div>
 
 						<div className="postFooter">
-							<div className="username">
-								{post.username}
+							<div className="usernameDiv">
+								<Link className="usernameLink" to={`/profile/${post.user_id}`}><span className="username">{post.username}</span></Link>
 							</div>
 							<div className="postDate">
 								{`${new Date(

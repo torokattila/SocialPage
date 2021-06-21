@@ -176,7 +176,10 @@ h3 {
 }
 
 .homePageContainer,
-.createPostContainer {
+.createPostContainer,
+.pageNotFoundContainer,
+.profilePageContainer, 
+.changePasswordContainer {
 	margin: 0;
 	width: 100%;
 	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
@@ -184,7 +187,10 @@ h3 {
 }
 
 .homePageContainer h1,
-.createPostContainer h1 {
+.createPostContainer h1,
+.pageNotFoundContainer h1,
+.profilePageContainer h1, 
+.changePasswordContainer h1 {
 	margin: 0;
 	color: #fff;
 	text-align: right;
@@ -381,7 +387,7 @@ h3 {
 }
 
 .postDate {
-	margin-top: 10px;
+	margin-top: 20px;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
@@ -393,4 +399,143 @@ h3 {
 	bottom: 5px!important;
 	font-size: 50px!important;
 	cursor: pointer;
+}
+
+.username {
+	cursor: pointer;
+	border: 2px solid #fff;
+	border-radius: 50px;
+	padding: 10px 20px;
+	transition: 0.4s;
+}
+
+.username:hover {
+	background-color: #fff;
+	transition: 0.4s;
+	color: #5DCC99;
+}
+
+.usernameLink {
+	text-decoration: none;
+	color: #fff;
+}
+
+.pageNotFoundContainer h2 {
+	text-align: center;
+	margin-top: 50px;
+	color: #278a8d;
+}
+
+.pageNotFoundLinksDiv {
+	margin-top: 50px;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+}
+
+.pageNotFoundLinksInnerDiv {
+	margin: 20px;
+}
+
+.pageNotFoundLink {
+	text-decoration: none;
+	font-size: 1.5vw;
+	color: #33be77;
+	transition: 0.2s ease-out;
+	padding: 10px 30px;
+}
+
+.pageNotFoundLink:hover {
+	border: 2px solid #2caf67;
+	transition: 0.2s ease-out;
+	border-radius: 50px;
+}
+
+.basicInfoContainer {
+	margin-top: 5vw;
+	color: #278a8d;
+}
+
+.changePasswordButton {
+	border: none;
+	padding: 1.2vw 3vw;
+	font-size: 1vw;
+	text-transform: uppercase;
+	margin-top: 2vw;
+	cursor: pointer;
+	border-radius: 50px;
+	font-weight: bold;
+	transition: 0.4s;
+	border: 1.5px solid #01d661;
+	color: #01d661;
+	background-color: #fff;
+}
+
+.changePasswordButton:hover {
+	background: #fff;
+	transition: 0.4s;
+	background-color: #36c977;
+	color: #fff;
+	border: none;
+}
+
+.changePasswordCard {
+	width: 40vw;
+	height: auto;
+	padding: 5vw;
+	margin: 0 auto;
+	margin-top: 7vw;
+	box-shadow: 0 5px 10px rgba(159, 165, 190, 0.274),
+		0 15px 40px rgba(166, 173, 201, .2);
+	border-radius: 20px;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+}
+
+.changePasswordCard h2 {
+	color: #33be77;
+	margin-top: -1vw;
+}
+
+.changePasswordCardInnerContent {
+	margin-top: 1vw;
+}
+
+.changePasswordInput {
+	border: none;
+	padding: 1vw;
+	font-size: 1.2vw;
+	border-bottom: 1px solid silver;
+	outline: none;
+	transition: 0.2s;
+	margin: 1vw;
+	color: #00ca5b;
+	width: 20vw;
+	text-align: center;
+}
+
+.changePasswordSubmitButton {
+	margin-top: 2.5vw;
+	border: none;
+	padding: 1vw 3.5vw;
+	font-size: 1vw;
+	text-transform: uppercase;
+	margin-top: 2vw;
+	cursor: pointer;
+	border-radius: 50px;
+	font-weight: bold;
+	transition: 0.4s;
+	border: 1.5px solid #01d661;
+	color: #01d661;
+	background-color: #fff;
+}
+
+.changePasswordSubmitButton:hover {
+	background: #fff;
+	transition: 0.4s;
+	background-color: #36c977;
+	color: #fff;
+	border: none;
 }
