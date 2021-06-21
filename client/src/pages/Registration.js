@@ -72,7 +72,6 @@ function Registration() {
 							<button 
                                 className="signInButton" 
                                 type="submit"
-                                onS
                                 >
 								Sign Up
 							</button>
