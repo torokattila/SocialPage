@@ -76,7 +76,17 @@ app.post("/api/registeruser", (req, res) => {
 });
 
 app.get("/auth", validateToken, (req, res) => {
-	res.json(req.user);
+	const userId = req.user.id;
+	const getUsernameQuery = "SELECT username FROM user WHERE id = ?";
+
+	db.query(getUsernameQuery, userId, (error, result) => {
+		if (error) {
+			console.log(error);
+			res.json({ error: "User does not exist!" });
+		} else if (result.length > 0) {
+			res.json({ user: req.user, username: result[0].username });
+		}
+	});
 });
 
 app.post("/api/loginuser", (req, res) => {
@@ -96,7 +106,7 @@ app.post("/api/loginuser", (req, res) => {
 					res.json({ error: "Wrong username or password!" });
 				} else if (response) {
 					const accessToken = sign(
-						{ username: result[0].username, id: result[0].id },
+						{ id: result[0].id },
 						"tOkEnSeCrEt"
 					);
 
@@ -296,60 +306,96 @@ app.get("/post/byUserId/:id", (req, res) => {
 	});
 });
 
-app.put("/changepassword", validateToken, (req, res) => {
-	const { oldPassword, newPassword } = req.body;
-	const username = req.user.username;
+app.put("/changecredentials", validateToken, (req, res) => {
+	const { oldUsername, newUsername, oldPassword, newPassword } = req.body;
+	const userId = req.user.id;
 	const getUserQuery = "SELECT * FROM user WHERE username = ?";
 
-	db.query(getUserQuery, username, (err, result) => {
+	db.query(getUserQuery, oldUsername, (err, result) => {
 		if (err) {
 			console.log(err);
 			res.json({ error: "There is no user with this username!" });
 		} else if (result.length > 0) {
-			bcrypt.compare(
-				oldPassword,
-				result[0].password,
-				(compareError, compareResult) => {
-					if (compareError) {
-						console.log(compareError);
-						res.json({
-							error: "There was an error with your old password!"
-						});
-					} else if (compareResult) {
-						bcrypt.hash(
-							newPassword,
-							saltRounds,
-							(hashError, hashedPassword) => {
-								if (hashError) {
-									console.log(hashError);
-									res.json({ error: hashError });
-								}
+			if (
+				newUsername !== "" &&
+				oldPassword === "" &&
+				newPassword === ""
+			) {
+				const updateUsernameQuery =
+					"UPDATE user, post SET user.username = ?, post.username = ? WHERE user.id = ? AND post.user_id = ?";
 
-								const updatePasswordQuery =
-									"UPDATE user SET password = ? WHERE username = ?";
-
-								db.query(
-									updatePasswordQuery,
-									[hashedPassword, username],
-									(updateError, updateResult) => {
-										if (updateError) {
-											console.log(updateError);
-											res.json({
-												error:
-													"There was an error with the update, try again please!"
-											});
-										} else if (updateResult) {
-											res.json(
-												"Password updated successfully!"
-											);
+				db.query(
+					updateUsernameQuery,
+					[newUsername, newUsername, userId, userId],
+					(usernameUpdateError, usernameUpdateResult) => {
+						if (usernameUpdateError) {
+							console.log(usernameUpdateError);
+							res.json({
+								error:
+									"There was an error during the username update! Please try again!"
+							});
+						} else if (usernameUpdateResult) {
+							res.json({
+								successMessage: "Username updated successfully!"
+							});
+						}
+					}
+				);
+			} else if (newUsername === "") {
+				if (oldPassword === "" || newPassword == "") {
+					res.json({
+						error:
+							"You have to fill both old password and new password fields!"
+					});
+				} else {
+					bcrypt.compare(
+						oldPassword,
+						result[0].password,
+						(compareError, compareResult) => {
+							if (compareError) {
+								console.log(compareError);
+								res.json({
+									error:
+										"There was an error with your old password!"
+								});
+							} else if (compareResult) {
+								bcrypt.hash(
+									newPassword,
+									saltRounds,
+									(hashError, hashedPassword) => {
+										if (hashError) {
+											console.log(hashError);
+											res.json({ error: hashError });
 										}
+
+										const updatePasswordQuery =
+											"UPDATE user SET password = ? WHERE id = ?";
+
+										db.query(
+											updatePasswordQuery,
+											[hashedPassword, userId],
+											(updateError, updateResult) => {
+												if (updateError) {
+													console.log(updateError);
+													res.json({
+														error:
+															"There was an error with the update, try again please!"
+													});
+												} else if (updateResult) {
+													res.json({
+														successMessage:
+															"Password updated successfully!"
+													});
+												}
+											}
+										);
 									}
 								);
 							}
-						);
-					}
+						}
+					);
 				}
-			);
+			}
 		}
 	});
 });

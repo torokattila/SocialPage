@@ -4,7 +4,7 @@ import { Link, useHistory } from "react-router-dom";
 import HomeIcon from "@material-ui/icons/Home";
 import PostAddIcon from "@material-ui/icons/PostAdd";
 
-function Navbar(props) {
+function Navbar() {
 	const [authState, setAuthState] = useState({
 		username: "",
 		id: 0,
@@ -26,9 +26,10 @@ function Navbar(props) {
 					if (response.data.error) {
 						setAuthState({ ...authState, status: false });
 					} else {
+						// console.log(response.data)
 						setAuthState({
 							username: response.data.username,
-							id: response.data.id,
+							id: response.data.user.id,
 							status: true
 						});
 					}

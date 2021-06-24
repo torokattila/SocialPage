@@ -24,6 +24,8 @@ function Profile() {
 			});
 	}, []);
 
+	console.log(authState.username);
+
 	return (
 		<div className="profilePageContainer">
 			<NavBar />
@@ -36,10 +38,10 @@ function Profile() {
 					<button
 						className="changePasswordButton"
 						onClick={() => {
-							history.push("/changepassword");
+							history.push("/changecredentials");
 						}}
 					>
-						Change Password
+						Change Credentials
 					</button>}
 			</div>
 		</div>

@@ -9,7 +9,7 @@ import Home from './pages/Home';
 import CreatePost from './pages/CreatePost';
 import PageNotFound from './pages/PageNotFound';
 import Profile from './pages/Profile';
-import ChangePassword from './pages/ChangePassword';
+import ChangeCredentials from './pages/ChangeCredentials';
 
 function App() {
 	const [authState, setAuthState] = useState({
@@ -31,7 +31,7 @@ function App() {
 				} else {
 					setAuthState({
 						username: response.data.username,
-						id: response.data.id,
+						id: response.data.user.id,
 						status: true
 					});
 				}
@@ -58,7 +58,7 @@ function App() {
 						<Route exact path="/" component={Home} />
 						<Route exact path="/createpost" component={CreatePost} />
 						<Route exact path="/profile/:id" component={Profile} />
-						<Route exact path="/changepassword" component={ChangePassword} />
+						<Route exact path="/changecredentials" component={ChangeCredentials} />
 						</>
 					)}
 					</Switch>

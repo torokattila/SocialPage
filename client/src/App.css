@@ -485,7 +485,7 @@ h3 {
 	height: auto;
 	padding: 5vw;
 	margin: 0 auto;
-	margin-top: 7vw;
+	margin-top: 3vw;
 	box-shadow: 0 5px 10px rgba(159, 165, 190, 0.274),
 		0 15px 40px rgba(166, 173, 201, .2);
 	border-radius: 20px;
@@ -538,4 +538,12 @@ h3 {
 	background-color: #36c977;
 	color: #fff;
 	border: none;
+}
+
+.changeUsernameDiv {
+	margin-bottom: 3vw;
+}
+
+.changeUsernameInput {
+	margin-top: -1vw;
 }
