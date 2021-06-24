@@ -478,6 +478,8 @@ h3 {
 	background-color: #36c977;
 	color: #fff;
 	border: none;
+	box-shadow: 0 5px 10px rgba(159, 165, 190, 0.274),
+		0 15px 40px rgba(166, 173, 201, .2);
 }
 
 .changePasswordCard {
@@ -538,6 +540,8 @@ h3 {
 	background-color: #36c977;
 	color: #fff;
 	border: none;
+	box-shadow: 0 5px 10px rgba(159, 165, 190, 0.274),
+		0 15px 40px rgba(166, 173, 201, .2);
 }
 
 .changeUsernameDiv {
@@ -546,4 +550,12 @@ h3 {
 
 .changeUsernameInput {
 	margin-top: -1vw;
+}
+
+.userPostsTitleDiv {
+	margin-top: 2vw;
+}
+
+.userPostsTitleDiv h2 {
+	color: #278a8d;
 }

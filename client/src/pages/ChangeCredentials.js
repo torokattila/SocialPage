@@ -51,7 +51,7 @@ function ChangeCredentials() {
 		<div className="changePasswordContainer">
 			<NavBar />
 			<div className="changePasswordCard" align="center">
-				<h2>Change Your Username:</h2>
+				<h2>Change Username:</h2>
 				<div className="changeUsernameDiv">
 				<form autoComplete="off">
 					<input
@@ -69,7 +69,7 @@ function ChangeCredentials() {
 					</form>
 				</div>
 
-				<h2>Change Your Password:</h2>
+				<h2>Change Password:</h2>
 				<div className="changePasswordCardInnerContent">
 					<div>
 						<input

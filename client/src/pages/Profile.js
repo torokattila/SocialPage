@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import axios from "axios";
-import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import FavoriteIcon from "@material-ui/icons/Favorite";
 import { AuthContext } from "../helpers/AuthContext";
 import NavBar from "../shared/Navbar";
 
@@ -24,8 +24,6 @@ function Profile() {
 			});
 	}, []);
 
-	console.log(authState.username);
-
 	return (
 		<div className="profilePageContainer">
 			<NavBar />
@@ -41,8 +39,53 @@ function Profile() {
 							history.push("/changecredentials");
 						}}
 					>
-						Change Credentials
+						Change My Credentials
 					</button>}
+			</div>
+
+			<div className="userPostsTitleDiv" align="center">
+				<h2>{username}'s posts:</h2>
+			</div>
+
+			<div className="listOfUserPosts">
+				{listOfPosts.map((post, index) => {
+					return (
+						<div className="postDiv" key={index}>
+							<div className="postTitle">
+								{post.title}
+							</div>
+
+							<div className="postContent">
+								{post.content}
+							</div>
+
+							<div className="postFooter">
+								<div className="usernameDiv">
+									<span className="username">
+										{post.username}
+									</span>
+								</div>
+
+								<div className="postDate">
+									{`${new Date(
+										post.created_at
+									).getFullYear()}-${new Date(
+										post.created_at
+									).getMonth() + 1}-${new Date(
+										post.created_at
+									).getDate()}`}
+
+									<div className="likeButtons">
+										<FavoriteIcon className="likeButton" />
+										<label>
+											{post.Likes.length}
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+					);
+				})}
 			</div>
 		</div>
 	);
