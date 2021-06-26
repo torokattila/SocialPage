@@ -88,7 +88,12 @@ function Home() {
 							{post.title}
 						</div>
 
-						<div className="postContent">
+						<div 
+							className="postContent"
+							onClick={() => {
+								history.push(`/posts/${post.post_id}`)
+							}}	
+						>
 							{post.content}
 						</div>
 

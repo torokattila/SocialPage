@@ -3,7 +3,7 @@ import { useParams, useHistory } from "react-router-dom";
 import axios from "axios";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import { AuthContext } from "../helpers/AuthContext";
-import NavBar from "../shared/Navbar";
+import Navbar from "../shared/Navbar";
 
 function Profile() {
 	let { id } = useParams();
@@ -26,7 +26,7 @@ function Profile() {
 
 	return (
 		<div className="profilePageContainer">
-			<NavBar />
+			<Navbar />
 			<div className="basicInfoContainer" align="center">
 				<h2>
 					Username: {username}
@@ -55,7 +55,12 @@ function Profile() {
 								{post.title}
 							</div>
 
-							<div className="postContent">
+							<div 
+								className="postContent" 
+								onClick={() => {
+									history.push(`/posts/${post.post_id}`)
+								}}
+							>
 								{post.content}
 							</div>
 

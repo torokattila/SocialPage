@@ -10,6 +10,7 @@ import CreatePost from './pages/CreatePost';
 import PageNotFound from './pages/PageNotFound';
 import Profile from './pages/Profile';
 import ChangeCredentials from './pages/ChangeCredentials';
+import Post from './pages/Post';
 
 function App() {
 	const [authState, setAuthState] = useState({
@@ -57,6 +58,7 @@ function App() {
 						<>
 						<Route exact path="/" component={Home} />
 						<Route exact path="/createpost" component={CreatePost} />
+						<Route exact path="/posts/:id" component={Post} />
 						<Route exact path="/profile/:id" component={Profile} />
 						<Route exact path="/changecredentials" component={ChangeCredentials} />
 						</>

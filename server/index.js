@@ -400,6 +400,61 @@ app.put("/changecredentials", validateToken, (req, res) => {
 	});
 });
 
+app.get("/posts/byId/:id", (req, res) => {
+	const postId = req.params.id;
+	const getSpecificPostQuery = "SELECT * FROM post WHERE post_id = ?";
+
+	db.query(getSpecificPostQuery, postId, (error, result) => {
+		if (error) {
+			console.log(error);
+			res.json("There is no post with this post id!");
+		} else if (result.length > 0) {
+			res.json(JSON.parse(JSON.stringify(result))[0]);
+		}
+	});
+});
+
+app.post("/comment", validateToken, (req, res) => {
+	const comment = req.body;
+	const insertCommentQuery = "INSERT INTO comments SET post_id = ?, user_id = ?, username = ?, created_at = NOW(), content = ?";
+
+	db.query(insertCommentQuery, [comment.postId, req.user.id, comment.username, comment.commentContent], (error, result) => {
+		if (error) {
+			console.log(error);
+			res.json({ error: error });
+		} else if (result) {
+			res.json(comment);
+		}
+	});
+});
+
+app.get("/comments/:postId", (req, res) => {
+	const postId = req.params.postId;
+	const getSpecificCommentsQuery = "SELECT * FROM comments WHERE post_id = ? ORDER BY created_at DESC";
+
+	db.query(getSpecificCommentsQuery, postId, (error, result) => {
+		if (error) {
+			console.log(error);
+		} else if (result) {
+			res.json(JSON.parse(JSON.stringify(result)));
+		}
+	});
+});
+
+app.delete("/deletecomment/:commentId", validateToken, (req, res) => {
+	const commentId = req.params.commentId;
+	const deleteCommentQuery = "DELETE FROM comments WHERE id = ?";
+
+	db.query(deleteCommentQuery, commentId, (error, result) => {
+		if (error) {
+			console.log(error);
+			res.json({ error: "There is no comment with this id!" });
+		} else if (result) {
+			res.json("Comment has been deleted!");
+		}
+	});
+});
+
 app.listen(PORT, () => {
 	console.log(`App is listening on PORT ${PORT}`);
 });
