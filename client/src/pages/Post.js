@@ -82,6 +82,24 @@ function Post() {
 		}
 	};
 
+	const deletePost = postId => {
+		if (window.confirm("Do you want to delete this post?")) {
+			axios.delete(`http://localhost:3001/deletepost/${postId}`, {
+				headers: {
+					accessToken: localStorage.getItem("accessToken")
+				}
+			})
+			.then(response => {
+				if (response.data.error) {
+					alert(response.data.error);
+				} else {
+					alert(response.data);
+					history.push('/');
+				}
+			})
+		}
+	};
+
 	return (
 		<div className="postPageContainer">
 			<Navbar />
@@ -115,7 +133,7 @@ function Post() {
 
 							{authState.username === postObject.username &&
 								<div className="likeButtons">
-									<DeleteIcon className="likeButton" />
+									<DeleteIcon className="likeButton" onClick={() => deletePost(postObject.post_id)} />
 								</div>}
 						</div>
 					</div>

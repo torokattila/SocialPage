@@ -455,6 +455,20 @@ app.delete("/deletecomment/:commentId", validateToken, (req, res) => {
 	});
 });
 
+app.delete("/deletepost/:postId", validateToken, (req, res) => {
+	const postId = req.params.postId;
+	const deletePostQuery = "DELETE FROM post WHERE post_id = ?";
+
+	db.query(deletePostQuery, postId, (error, result) => {
+		if (error) {
+			console.log(error);
+			res.json({ error: "There was an error with deleting this post, try again please!" });
+		} else if (result) {
+			res.json("Post deleted!");
+		}
+	});
+});
+
 app.listen(PORT, () => {
 	console.log(`App is listening on PORT ${PORT}`);
 });
