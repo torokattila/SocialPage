@@ -7,11 +7,12 @@ import { AuthContext } from "../helpers/AuthContext";
 import Navbar from "../shared/Navbar";
 
 function CreatePost() {
+	const { authState } = useContext(AuthContext);
 	const initialValues = {
 		title: "",
-		content: ""
+		content: "",
+		username: authState.username
 	};
-	const { authState } = useContext(AuthContext);
 	let history = useHistory();
 
 	useEffect(() => {
@@ -24,20 +25,26 @@ function CreatePost() {
 		title: Yup.string().required("You must provide a title for your post!"),
 		content: Yup.string().required(
 			"You must provide a content for your post!"
-		)
+		),
 	});
 
 	const onSubmit = data => {
-        axios.post("http://localhost:3001/createpost", data, {
-            headers: { accessToken: localStorage.getItem('accessToken') }
-        }).then(response => {
-            if (response.data.error) {
-                alert("There was an error with the creation, try again please.")
-            } else {
-                history.push('/');
-            }
-        });
-    };
+		axios
+			.post("http://localhost:3001/createpost", data, {
+				headers: {
+					accessToken: localStorage.getItem("accessToken")
+				}
+			})
+			.then(response => {
+				if (response.data.error) {
+					alert(
+						"There was an error with the creation, try again please."
+					);
+				} else {
+					history.push("/");
+				}
+			});
+	};
 
 	return (
 		<div className="createPostContainer">
@@ -58,8 +65,13 @@ function CreatePost() {
 							placeholder="Title of the post"
 						/>
 
+						<Field
+							type="hidden"
+							name="username"
+						/>
+
 						<label>Content:</label>
-                        <ErrorMessage name="content" component="h3" />
+						<ErrorMessage name="content" component="h3" />
 						<Field
 							autoComplete="off"
 							id="inputCreatePost"

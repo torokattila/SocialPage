@@ -127,7 +127,7 @@ app.post("/api/loginuser", (req, res) => {
 app.post("/createpost", validateToken, (req, res) => {
 	const post = req.body;
 	const userId = req.user.id;
-	const username = req.user.username;
+	const username = req.body.username;
 
 	const insertQuery =
 		"INSERT INTO post SET user_id = ?, title = ?, content = ?, created_at = NOW(), username = ?;";
@@ -149,7 +149,7 @@ app.post("/createpost", validateToken, (req, res) => {
 app.get("/getposts", validateToken, (req, res) => {
 	const userId = req.user.id;
 	const selectPostsQuery =
-		"SELECT post.post_id, post.user_id, post.title, post.content, post.created_at, post.username, IFNULL(GROUP_CONCAT(likes.post_id), '') AS Likes, IFNULL(GROUP_CONCAT(likes.user_id), '') AS like_user_id FROM post AS post LEFT OUTER JOIN likes AS likes ON post.post_id = likes.post_id GROUP BY post_id ORDER BY post.created_at DESC;";
+		"SELECT post.post_id, post.user_id, post.title, post.content, post.created_at, post.username, IFNULL(GROUP_CONCAT(likes.post_id), '') AS Likes, IFNULL(GROUP_CONCAT(likes.user_id), '') AS like_user_id, (SELECT COUNT(post_id) AS comment_counts FROM comments WHERE comments.post_id = post.post_id) AS Comments FROM post AS post LEFT OUTER JOIN likes AS likes ON post.post_id = likes.post_id GROUP BY post_id ORDER BY post.created_at DESC;";
 	const selectLikesQuery = "SELECT * FROM likes WHERE user_id = ?;";
 
 	db.query(selectPostsQuery, (err, result) => {
@@ -416,21 +416,27 @@ app.get("/posts/byId/:id", (req, res) => {
 
 app.post("/comment", validateToken, (req, res) => {
 	const comment = req.body;
-	const insertCommentQuery = "INSERT INTO comments SET post_id = ?, user_id = ?, username = ?, created_at = NOW(), content = ?";
+	const insertCommentQuery =
+		"INSERT INTO comments SET post_id = ?, user_id = ?, username = ?, created_at = NOW(), content = ?";
 
-	db.query(insertCommentQuery, [comment.postId, req.user.id, comment.username, comment.commentContent], (error, result) => {
-		if (error) {
-			console.log(error);
-			res.json({ error: error });
-		} else if (result) {
-			res.json(comment);
+	db.query(
+		insertCommentQuery,
+		[comment.postId, req.user.id, comment.username, comment.commentContent],
+		(error, result) => {
+			if (error) {
+				console.log(error);
+				res.json({ error: error });
+			} else if (result) {
+				res.json(comment);
+			}
 		}
-	});
+	);
 });
 
 app.get("/comments/:postId", (req, res) => {
 	const postId = req.params.postId;
-	const getSpecificCommentsQuery = "SELECT * FROM comments WHERE post_id = ? ORDER BY created_at DESC";
+	const getSpecificCommentsQuery =
+		"SELECT * FROM comments WHERE post_id = ? ORDER BY created_at DESC";
 
 	db.query(getSpecificCommentsQuery, postId, (error, result) => {
 		if (error) {
@@ -457,12 +463,15 @@ app.delete("/deletecomment/:commentId", validateToken, (req, res) => {
 
 app.delete("/deletepost/:postId", validateToken, (req, res) => {
 	const postId = req.params.postId;
-	const deletePostQuery = "DELETE FROM post WHERE post_id = ?";
+	const deletePostQuery = "DELETE FROM post, likes, comments USING post INNER JOIN likes ON post.post_id = likes.post_id INNER JOIN comments ON likes.post_id = comments.post_id WHERE post.post_id = ?;";
 
 	db.query(deletePostQuery, postId, (error, result) => {
 		if (error) {
 			console.log(error);
-			res.json({ error: "There was an error with deleting this post, try again please!" });
+			res.json({
+				error:
+					"There was an error with deleting this post, try again please!"
+			});
 		} else if (result) {
 			res.json("Post deleted!");
 		}

@@ -5,6 +5,7 @@ import Navbar from "../shared/Navbar";
 import { AuthContext } from "../helpers/AuthContext";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import FavoriteIcon from "@material-ui/icons/Favorite";
+import ChatIcon from "@material-ui/icons/Chat";
 
 function Home() {
 	const [listOfPosts, setListOfPosts] = useState([]);
@@ -51,7 +52,6 @@ function Home() {
 				setListOfPosts(
 					listOfPosts.map(post => {
 						if (post.post_id === postId) {
-
 							if (response.data.isLiked) {
 								return { ...post, Likes: [...post.Likes, 0] };
 							} else {
@@ -65,7 +65,7 @@ function Home() {
 						}
 					})
 				);
-				
+
 				if (likedPosts.includes(postId)) {
 					setLikedPosts(
 						likedPosts.filter(id => {
@@ -88,18 +88,25 @@ function Home() {
 							{post.title}
 						</div>
 
-						<div 
+						<div
 							className="postContent"
 							onClick={() => {
-								history.push(`/posts/${post.post_id}`)
-							}}	
+								history.push(`/posts/${post.post_id}`);
+							}}
 						>
 							{post.content}
 						</div>
 
 						<div className="postFooter">
 							<div className="usernameDiv">
-								<Link className="usernameLink" to={`/profile/${post.user_id}`}><span className="username">{post.username}</span></Link>
+								<Link
+									className="usernameLink"
+									to={`/profile/${post.user_id}`}
+								>
+									<span className="username">
+										{post.username}
+									</span>
+								</Link>
 							</div>
 							<div className="postDate">
 								{`${new Date(
@@ -109,6 +116,13 @@ function Home() {
 								).getMonth() + 1}-${new Date(
 									post.created_at
 								).getDate()}`}
+
+								<div className="commentCounterDiv">
+									<ChatIcon className="commentsIcon" />
+									<label>
+										{post.Comments}
+									</label>
+								</div>
 
 								<div className="likeButtons">
 									{likedPosts.includes(post.post_id)
