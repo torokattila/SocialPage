@@ -4,6 +4,7 @@ import { AuthContext } from "../helpers/AuthContext";
 import axios from "axios";
 import Navbar from "../shared/Navbar";
 import DeleteIcon from "@material-ui/icons/Delete";
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
 function Post() {
 	let { id } = useParams();
@@ -84,19 +85,70 @@ function Post() {
 
 	const deletePost = postId => {
 		if (window.confirm("Do you want to delete this post?")) {
-			axios.delete(`http://localhost:3001/deletepost/${postId}`, {
-				headers: {
-					accessToken: localStorage.getItem("accessToken")
-				}
-			})
-			.then(response => {
-				if (response.data.error) {
-					alert(response.data.error);
-				} else {
-					alert(response.data);
-					history.push('/');
-				}
-			})
+			axios
+				.delete(`http://localhost:3001/deletepost/${postId}`, {
+					headers: {
+						accessToken: localStorage.getItem("accessToken")
+					}
+				})
+				.then(response => {
+					if (response.data.error) {
+						alert(response.data.error);
+					} else {
+						alert(response.data);
+						history.push("/");
+					}
+				});
+		}
+	};
+
+	const editPost = option => {
+		if (option === "title") {
+			let newTitle = prompt("Enter the new title:");
+
+			if (newTitle) {
+				axios
+					.put(
+						"http://localhost:3001/edittitle",
+						{
+							newTitle: newTitle,
+							postId: id
+						},
+						{
+							headers: {
+								accessToken: localStorage.getItem("accessToken")
+							}
+						}
+					)
+					.then(response => {
+						if (response.data.error) {
+							alert(
+								"We were unable to update the title, please try again!"
+							);
+						} else {
+							setPostObject({ ...postObject, title: newTitle });
+						}
+					});
+			}
+		} else {
+			let newPostContent = prompt("Enter the new content of the post:");
+
+			if (newPostContent) {
+				axios.put("http://localhost:3001/editcontent", {
+					newContent: newPostContent,
+					postId: id
+				}, {
+					headers: {
+						accessToken: localStorage.getItem("accessToken")
+					}
+				}).then(response => {
+					if (response.data.error) {
+						alert("We were unable to update the content, please try again!");
+					} else {
+						setPostObject({ ...postObject, content: newPostContent });
+					}
+				});
+			}
 		}
 	};
 
@@ -106,11 +158,31 @@ function Post() {
 			<div className="postCommentContainer">
 				<div className="leftSide">
 					<div className="postDiv">
-						<div className="postTitle">
+						<div
+							className="postTitle"
+							onClick={() => {
+								if (
+									authState.username === postObject.username
+								) {
+									editPost("title");
+								}
+							}}
+						>
 							{postObject.title}
+							<EditOutlinedIcon className="editTitleIcon" />
 						</div>
 
-						<div className="postContent">
+						<div
+							className="postContent"
+							onClick={() => {
+								if (
+									authState.username === postObject.username
+								) {
+									editPost("content");
+								}
+							}}
+						>
+							<EditOutlinedIcon className="editContentIcon" />
 							{postObject.content}
 						</div>
 
@@ -133,7 +205,11 @@ function Post() {
 
 							{authState.username === postObject.username &&
 								<div className="likeButtons">
-									<DeleteIcon className="likeButton" onClick={() => deletePost(postObject.post_id)} />
+									<DeleteIcon
+										className="likeButton"
+										onClick={() =>
+											deletePost(postObject.post_id)}
+									/>
 								</div>}
 						</div>
 					</div>

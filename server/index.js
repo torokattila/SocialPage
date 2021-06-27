@@ -478,6 +478,34 @@ app.delete("/deletepost/:postId", validateToken, (req, res) => {
 	});
 });
 
+app.put("/edittitle", validateToken, (req, res) => {
+	const { newTitle, postId } = req.body;
+	const updatePostTitleQuery = "UPDATE post SET title = ? WHERE post_id = ?";
+
+	db.query(updatePostTitleQuery, [newTitle, postId], (error, result) => {
+		if (error) {
+			console.log(error);
+			res.json({ error: error });
+		} else if (result) {
+			res.json("Title has been updated!");
+		}
+	});
+});
+
+app.put("/editcontent", validateToken, (req, res) => {
+	const { newContent, postId } = req.body;
+	const updatePostContentQuery = "UPDATE post SET content = ? WHERE post_id = ?";
+
+	db.query(updatePostContentQuery, [newContent, postId], (error, result) => {
+		if (error) {
+			console.log(error);
+			res.json({ error: error });
+		} else if (result) {
+			res.json("Content has been updated!");
+		}
+	});
+});
+
 app.listen(PORT, () => {
 	console.log(`App is listening on PORT ${PORT}`);
 });

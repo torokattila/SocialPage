@@ -382,6 +382,7 @@ h3 {
 	font-size: 30px;
 	display: flex;
 	justify-content: space-between;
+	cursor: pointer;
 }
 
 .postContent {
@@ -707,4 +708,28 @@ h3 {
 	bottom: 5px !important;
 	font-size: 50px !important;
 	cursor: pointer;
+}
+
+.editTitleIcon {
+	display: none !important;
+	font-size: 1.5vw !important;
+	position: relative;
+	right: 15vw;
+	bottom: 0.5vw;
+}
+
+.postTitle:hover .editTitleIcon {
+	display: block !important;	
+}
+
+.editContentIcon {
+	display: none !important;
+	position: absolute;
+	font-size: 2vw !important;
+	margin-top: 2vw !important;
+	margin-left: 22.7vw !important;
+}
+
+.postContent:hover .editContentIcon {
+	display: block !important;
 }
