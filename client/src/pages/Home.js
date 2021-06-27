@@ -118,7 +118,9 @@ function Home() {
 								).getDate()}`}
 
 								<div className="commentCounterDiv">
-									<ChatIcon className="commentsIcon" />
+									<ChatIcon className="commentsIcon" onClick={() => {
+										history.push(`/posts/${post.post_id}`);
+									}} />
 									<label>
 										{post.Comments}
 									</label>

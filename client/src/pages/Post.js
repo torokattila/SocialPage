@@ -4,7 +4,8 @@ import { AuthContext } from "../helpers/AuthContext";
 import axios from "axios";
 import Navbar from "../shared/Navbar";
 import DeleteIcon from "@material-ui/icons/Delete";
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
+import Tooltip from "@material-ui/core/Tooltip";
 
 function Post() {
 	let { id } = useParams();
@@ -134,20 +135,31 @@ function Post() {
 			let newPostContent = prompt("Enter the new content of the post:");
 
 			if (newPostContent) {
-				axios.put("http://localhost:3001/editcontent", {
-					newContent: newPostContent,
-					postId: id
-				}, {
-					headers: {
-						accessToken: localStorage.getItem("accessToken")
-					}
-				}).then(response => {
-					if (response.data.error) {
-						alert("We were unable to update the content, please try again!");
-					} else {
-						setPostObject({ ...postObject, content: newPostContent });
-					}
-				});
+				axios
+					.put(
+						"http://localhost:3001/editcontent",
+						{
+							newContent: newPostContent,
+							postId: id
+						},
+						{
+							headers: {
+								accessToken: localStorage.getItem("accessToken")
+							}
+						}
+					)
+					.then(response => {
+						if (response.data.error) {
+							alert(
+								"We were unable to update the content, please try again!"
+							);
+						} else {
+							setPostObject({
+								...postObject,
+								content: newPostContent
+							});
+						}
+					});
 			}
 		}
 	};
@@ -169,7 +181,10 @@ function Post() {
 							}}
 						>
 							{postObject.title}
-							<EditOutlinedIcon className="editTitleIcon" />
+							{authState.username === postObject.username &&
+								<Tooltip title="Edit post title">
+									<EditOutlinedIcon className="editTitleIcon" />
+								</Tooltip>}
 						</div>
 
 						<div
@@ -182,7 +197,10 @@ function Post() {
 								}
 							}}
 						>
-							<EditOutlinedIcon className="editContentIcon" />
+							{authState.username === postObject.username &&
+								<Tooltip title="Edit post content">
+									<EditOutlinedIcon className="editContentIcon" />
+								</Tooltip>}
 							{postObject.content}
 						</div>
 

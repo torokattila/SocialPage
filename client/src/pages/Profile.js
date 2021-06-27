@@ -4,6 +4,8 @@ import axios from "axios";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import { AuthContext } from "../helpers/AuthContext";
 import Navbar from "../shared/Navbar";
+import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
+import Tooltip from "@material-ui/core/Tooltip";
 
 function Profile() {
 	let { id } = useParams();
@@ -30,21 +32,22 @@ function Profile() {
 			<div className="basicInfoContainer" align="center">
 				<h2>
 					Username: {username}
+					{authState.username === username &&
+						<Tooltip title="Edit credentials">
+							<EditOutlinedIcon
+								className="editCredentialsIcon"
+								onClick={() => {
+									history.push("/changecredentials");
+								}}
+							/>
+						</Tooltip>}
 				</h2>
-
-				{authState.username === username &&
-					<button
-						className="changePasswordButton"
-						onClick={() => {
-							history.push("/changecredentials");
-						}}
-					>
-						Change My Credentials
-					</button>}
 			</div>
 
 			<div className="userPostsTitleDiv" align="center">
-				<h2>{username}'s posts:</h2>
+				<h2>
+					{username}'s posts:
+				</h2>
 			</div>
 
 			<div className="listOfUserPosts">
@@ -55,10 +58,10 @@ function Profile() {
 								{post.title}
 							</div>
 
-							<div 
-								className="postContent" 
+							<div
+								className="postContent"
 								onClick={() => {
-									history.push(`/posts/${post.post_id}`)
+									history.push(`/posts/${post.post_id}`);
 								}}
 							>
 								{post.content}
