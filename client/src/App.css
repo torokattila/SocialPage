@@ -45,8 +45,8 @@ body {
 .loginCard {
 	display: flex;
 	flex-direction: row;
-	width: 1200px;
-	height: 650px;
+	width: 62.5vw;
+	height: 34vw;
 	background-color: #fff;
 	border-radius: 30px;
 	box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
@@ -64,16 +64,17 @@ body {
 
 .headerDiv {
 	text-align: center;
-	margin-top: 50px;
+	margin-top: 2.6vw;
 }
 
 .headerDiv h1 {
 	color: #33be77;
 	font-weight: 900;
+	font-size: 1.5vw;
 }
 
 .headerDiv hr {
-	width: 60px;
+	width: 3.1vw;
 	height: 3px;
 	border: none;
 	background: #33be77;
@@ -98,20 +99,21 @@ body {
 	align-items: center;
 	flex-direction: column;
 	font-size: 12px;
+	font-size: 0.62vw;
 	color: #fff;
 	font-weight: bold;
 }
 
 .rightHeaderDiv button {
 	cursor: pointer;
-	margin-top: 20px;
+	margin-top: 1vw;
 	border-radius: 50px;
 	background: transparent;
 	border: 1px solid #fff;
 	color: #fff;
-	padding: 15px;
-	width: 220px;
-	font-size: 20px;
+	padding: 0.79vw;
+	width: 11.5vw;
+	font-size: 1.05vw;
 	transition: 0.4s;
 }
 
@@ -123,7 +125,7 @@ body {
 }
 
 .loginInputsDiv {
-	margin-top: 50px;
+	margin-top: 2.6vw;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -132,18 +134,19 @@ body {
 
 .inputLabel {
 	position: relative;
-	margin-right: 350px;
+	margin-right: 18.2vw;
 	color: #33be77;
 	font-weight: bold;
+	font-size: 1vw;
 }
 
 .loginInput {
-	width: 400px;
+	width: 21vw;
 	background: #fff;
-	padding: 20px;
+	padding: 1vw;
 	border: 1px solid silver;
-	margin: 20px;
-	font-size: 20px;
+	margin: 1vw;
+	font-size: 1.05vw;
 	border-radius: 5px;
 	transition: 0.2s;
 }
@@ -157,12 +160,12 @@ body {
 
 .signInButton {
 	border: none;
-	margin-top: 40px;
+	margin-top: 2.2vw;
 	cursor: pointer;
 	border-radius: 50px;
-	padding: 17px;
-	width: 220px;
-	font-size: 18px;
+	padding: 0.9vw;
+	width: 11.5vw;
+	font-size: 1vw;
 	transition: 0.4s;
 	color: #fff;
 	font-weight: bold;
@@ -715,4 +718,121 @@ h3 {
 
 .postContent:hover .editContentIcon {
 	display: block !important;
+}
+
+@media only screen and (max-width: 600px) {
+	.loginCard {
+		display: flex;
+		flex-direction: column;
+		width: 78.5vw;
+		height: 120vw;
+		background-color: #fff;
+		border-radius: 30px;
+		box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+			rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+	}
+
+	.loginCardLeftSide {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		height: 110vw;
+		background-color: #fff;
+		border-top-left-radius: 30px;
+		border-top-right-radius: 30px;
+	}
+
+	.headerDiv {
+		text-align: center;
+		margin-top: 12vw;
+	}
+	
+	.headerDiv h1 {
+		color: #33be77;
+		font-weight: 900;
+		font-size: 5.5vw;
+	}
+
+	.headerDiv hr {
+		width: 12vw;
+		height: 3px;
+		border: none;
+		background: #33be77;
+	}
+
+	.loginInputsDiv {
+		margin-top: 2.6vw;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+	}
+	
+	.inputLabel {
+		position: relative;
+		margin-right: 35vw;
+		color: #33be77;
+		font-weight: bold;
+		font-size: 3vw;
+	}
+	
+	.loginInput {
+		width: 45vw;
+		background: #fff;
+		padding: 2.5vw;
+		border: 1px solid silver;
+		margin: 1vw;
+		font-size: 3vw;
+		border-radius: 5px;
+		transition: 0.2s;
+	}
+	
+	.loginCardRightSide {
+		background-image: linear-gradient(
+			109.6deg,
+			rgba(102, 203, 149, 1) 11.2%,
+			rgba(39, 210, 175, 1) 98.7%
+		);
+		width: 100%;
+		height: 50vw;
+		border-top-right-radius: 0;
+		border-bottom-right-radius: 30px;
+		border-bottom-left-radius: 30px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.rightHeaderDiv {
+		font-size: 2vw;
+	}
+
+	.signInButton {
+		border: none;
+		margin-top: 6vw;
+		cursor: pointer;
+		border-radius: 50px;
+		padding: 2.3vw;
+		width: 35vw;
+		font-size: 3.2vw;
+		transition: 0.4s;
+		color: #fff;
+		font-weight: bold;
+		background-color: #36c977;
+		box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+		transition: 0.4s;
+	}
+
+	.rightHeaderDiv button {
+		cursor: pointer;
+		margin-top: 4vw;
+		border-radius: 50px;
+		background: transparent;
+		border: 1px solid #fff;
+		color: #fff;
+		padding: 2.3vw;
+		width: 35vw;
+		font-size: 3.2vw;
+		transition: 0.4s;
+	}
 }

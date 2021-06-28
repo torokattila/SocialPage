@@ -49,13 +49,15 @@ function Registration() {
 								Username:
 							</label>
 							<ErrorMessage name="username" component="h3" />
-							<Field
-								type="text"
-								name="username"
-								autocomplete="off"
-								className="loginInput"
-								placeholder="Username"
-							/>
+							<form>
+								<Field
+									type="text"
+									name="username"
+									autoComplete="off"
+									className="loginInput"
+									placeholder="Username"
+								/>
+							</form>
 
 							<label for="password" className="inputLabel">
 								Password:
@@ -63,16 +65,13 @@ function Registration() {
 							<ErrorMessage name="password" component="h3" />
 							<Field
 								type="password"
-								autocomplete="off"
+								autoComplete="off"
 								name="password"
 								className="loginInput"
 								placeholder="Password"
 							/>
 
-							<button 
-                                className="signInButton" 
-                                type="submit"
-                                >
+							<button className="signInButton" type="submit">
 								Sign Up
 							</button>
 						</div>
