@@ -45,7 +45,7 @@ function Registration() {
 							<hr />
 						</div>
 						<div className="loginInputsDiv">
-							<label for="username" className="inputLabel">
+							<label htmlFor="username" className="inputLabel">
 								Username:
 							</label>
 							<ErrorMessage name="username" component="h3" />
@@ -59,7 +59,7 @@ function Registration() {
 								/>
 							</form>
 
-							<label for="password" className="inputLabel">
+							<label htmlFor="password" className="inputLabel">
 								Password:
 							</label>
 							<ErrorMessage name="password" component="h3" />

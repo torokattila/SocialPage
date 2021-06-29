@@ -272,7 +272,7 @@ app.get("/post/byUserId/:id", (req, res) => {
 	const userId = req.params.id;
 
 	const selectPostsQuery =
-		"SELECT post.post_id, post.user_id, post.title, post.content, post.created_at, post.username, IFNULL(GROUP_CONCAT(likes.post_id), '') AS Likes, IFNULL(GROUP_CONCAT(likes.user_id), '') AS like_user_id FROM post AS post LEFT OUTER JOIN likes AS likes ON post.post_id = likes.post_id WHERE post.user_id = ? GROUP BY post_id ORDER BY post.created_at DESC;";
+		"SELECT post.post_id, post.user_id, post.title, post.content, post.created_at, post.username, IFNULL(GROUP_CONCAT(likes.post_id), '') AS Likes, IFNULL(GROUP_CONCAT(likes.user_id), '') AS like_user_id, (SELECT COUNT(post_id) AS comment_counts FROM comments WHERE comments.post_id = post.post_id) AS Comments FROM post AS post LEFT OUTER JOIN likes AS likes ON post.post_id = likes.post_id WHERE post.user_id = ? GROUP BY post_id ORDER BY post.created_at DESC;";
 
 	db.query(selectPostsQuery, userId, (err, result) => {
 		if (err) {

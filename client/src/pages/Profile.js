@@ -6,6 +6,7 @@ import { AuthContext } from "../helpers/AuthContext";
 import Navbar from "../shared/Navbar";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import Tooltip from "@material-ui/core/Tooltip";
+import ChatIcon from "@material-ui/icons/Chat";
 
 function Profile() {
 	let { id } = useParams();
@@ -82,6 +83,15 @@ function Profile() {
 									).getMonth() + 1}-${new Date(
 										post.created_at
 									).getDate()}`}
+
+									<div className="commentCounterDiv">
+									<ChatIcon className="commentsIcon" onClick={() => {
+										history.push(`/posts/${post.post_id}`);
+									}} />
+									<label>
+										{post.Comments}
+									</label>
+								</div>
 
 									<div className="likeButtons">
 										<FavoriteIcon className="likeButton" />
