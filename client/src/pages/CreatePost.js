@@ -5,6 +5,7 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { AuthContext } from "../helpers/AuthContext";
 import Navbar from "../shared/Navbar";
+import Swal from "sweetalert2";
 
 function CreatePost() {
 	const { authState } = useContext(AuthContext);
@@ -37,9 +38,11 @@ function CreatePost() {
 			})
 			.then(response => {
 				if (response.data.error) {
-					alert(
-						"There was an error with the creation, try again please."
-					);
+					Swal.fire({
+						title: "",
+						text: "There was an error with the creation, try again please.",
+						type: "error",
+					});
 				} else {
 					history.push("/");
 				}

@@ -3,6 +3,7 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { AuthContext } from "../helpers/AuthContext";
 import NavBar from "../shared/Navbar";
+import Swal from "sweetalert2";
 
 function ChangeCredentials() {
 	const [oldPassword, setOldPassword] = useState("");
@@ -12,39 +13,61 @@ function ChangeCredentials() {
 	let history = useHistory();
 
 	const changeCredentials = () => {
-		if (window.confirm("Do you want to change your credentials?")) {
-			if (newUsername === "" && oldPassword === "" && newPassword === "") {
-				alert(
-					"If you want to change your credentials, fill the username field and the two password fields below!"
-				);
-				return;
-			} else {
-				axios
-					.put(
-						"http://localhost:3001/changecredentials",
-						{
-							oldUsername: authState.username,
-							oldPassword: oldPassword,
-							newPassword: newPassword,
-							newUsername: newUsername
-						},
-						{
-							headers: {
-								accessToken: localStorage.getItem("accessToken")
-							}
-						}
-					)
-					.then(response => {
-						if (response.data.error) {
-							alert(response.data.error);
-						} else {
-							alert(response.data.successMessage);
-							history.push("/");
-							window.location.reload();
-						}
+		Swal.fire({
+			title: "Are you sure?",
+			text: "Do you want to change your credentials?",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "Yes!"
+		}).then(response => {
+			if (response.value) {
+				if (newUsername === "" && oldPassword === "" && newPassword === "") {
+					Swal.fire({
+						title: "",
+						text: "If you want to change your credentials, fill the username field and/or the two password fields below!",
+						type: "error",
 					});
+					return;
+				} else {
+					axios
+						.put(
+							"http://localhost:3001/changecredentials",
+							{
+								oldUsername: authState.username,
+								oldPassword: oldPassword,
+								newPassword: newPassword,
+								newUsername: newUsername
+							},
+							{
+								headers: {
+									accessToken: localStorage.getItem("accessToken")
+								}
+							}
+						)
+						.then(response => {
+							if (response.data.error) {
+								Swal.fire({
+									title: "",
+									text: response.data.error,
+									type: "error",
+								});
+							} else {
+								Swal.fire({
+									title: "",
+									text: response.data.successMessage,
+									type: "success",
+								}).then(response => {
+									if (response.value) {
+										history.push("/");
+										window.location.reload();
+									}
+								});
+							}
+						});
+				}
 			}
-		}
+		});
 	};
 
 	return (

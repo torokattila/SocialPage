@@ -24,14 +24,15 @@ const db = mysql.createPool({
 	user: process.env.DB_USER,
 	password: process.env.PASSWORD,
 	database: process.env.DATABASE,
-	insecureAuth: true
+	insecureAuth: true,
+	multipleStatements: true
 });
 
 const saltRounds = 10;
 
 app.post("/api/registeruser", (req, res) => {
 	const { username, password } = req.body;
-
+	
 	db.query(
 		"SELECT username FROM user WHERE username = ?",
 		username,
@@ -94,34 +95,48 @@ app.post("/api/loginuser", (req, res) => {
 
 	const sqlSelect = "SELECT * FROM user WHERE username = ?;";
 
-	db.query(sqlSelect, username, (err, result) => {
-		if (err) {
-			res.json(err);
-			console.log(err);
-		}
+	if (username === "" && password === "") {
+		res.json({
+			error: "You have to fill both username and password field!"
+		});
+	} else if (username === "" && password !== "") {
+		res.json({ error: "Please fill the username field!" });
+	} else if (username !== "" && password === "") {
+		res.json({ error: "Please fill the password field!" });
+	} else {
+		db.query(sqlSelect, username, (err, result) => {
+			if (err) {
+				res.json(err);
+				console.log(err);
+			}
 
-		if (result.length > 0) {
-			bcrypt.compare(password, result[0].password, (error, response) => {
-				if (!response) {
-					res.json({ error: "Wrong username or password!" });
-				} else if (response) {
-					const accessToken = sign(
-						{ id: result[0].id },
-						"tOkEnSeCrEt"
-					);
+			if (result.length > 0) {
+				bcrypt.compare(
+					password,
+					result[0].password,
+					(error, response) => {
+						if (!response) {
+							res.json({ error: "Wrong username or password!" });
+						} else if (response) {
+							const accessToken = sign(
+								{ id: result[0].id },
+								"tOkEnSeCrEt"
+							);
 
-					res.json({
-						token: accessToken,
-						username: username,
-						id: result[0].id
-					});
-				}
-			});
-		} else {
-			res.json({ error: "Wrong credentials!" });
-			console.log("Wrong credentials");
-		}
-	});
+							res.json({
+								token: accessToken,
+								username: username,
+								id: result[0].id
+							});
+						}
+					}
+				);
+			} else {
+				res.json({ error: "Wrong credentials!" });
+				console.log("Wrong credentials");
+			}
+		});
+	}
 });
 
 app.post("/createpost", validateToken, (req, res) => {
@@ -419,18 +434,27 @@ app.post("/comment", validateToken, (req, res) => {
 	const insertCommentQuery =
 		"INSERT INTO comments SET post_id = ?, user_id = ?, username = ?, created_at = NOW(), content = ?";
 
-	db.query(
-		insertCommentQuery,
-		[comment.postId, req.user.id, comment.username, comment.commentContent],
-		(error, result) => {
-			if (error) {
-				console.log(error);
-				res.json({ error: error });
-			} else if (result) {
-				res.json(comment);
+	if (comment.commentContent === "") {
+		res.json({ error: "Add some text to the comment!" });
+	} else {
+		db.query(
+			insertCommentQuery,
+			[
+				comment.postId,
+				req.user.id,
+				comment.username,
+				comment.commentContent
+			],
+			(error, result) => {
+				if (error) {
+					console.log(error);
+					res.json({ error: error });
+				} else if (result) {
+					res.json(comment);
+				}
 			}
-		}
-	);
+		);
+	}
 });
 
 app.get("/comments/:postId", (req, res) => {
@@ -463,9 +487,9 @@ app.delete("/deletecomment/:commentId", validateToken, (req, res) => {
 
 app.delete("/deletepost/:postId", validateToken, (req, res) => {
 	const postId = req.params.postId;
-	const deletePostQuery = "DELETE FROM post, likes, comments USING post INNER JOIN likes ON post.post_id = likes.post_id INNER JOIN comments ON likes.post_id = comments.post_id WHERE post.post_id = ?;";
+	const deletePostQuery = "DELETE FROM post WHERE post_id = ?; DELETE FROM likes WHERE post_id = ?; DELETE FROM comments WHERE post_id = ?;"
 
-	db.query(deletePostQuery, postId, (error, result) => {
+	db.query(deletePostQuery, [postId, postId, postId], (error, result) => {
 		if (error) {
 			console.log(error);
 			res.json({
@@ -494,7 +518,8 @@ app.put("/edittitle", validateToken, (req, res) => {
 
 app.put("/editcontent", validateToken, (req, res) => {
 	const { newContent, postId } = req.body;
-	const updatePostContentQuery = "UPDATE post SET content = ? WHERE post_id = ?";
+	const updatePostContentQuery =
+		"UPDATE post SET content = ? WHERE post_id = ?";
 
 	db.query(updatePostContentQuery, [newContent, postId], (error, result) => {
 		if (error) {

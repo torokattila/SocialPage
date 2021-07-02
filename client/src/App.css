@@ -22,6 +22,62 @@ body {
 	}
 }
 
+.swal2-confirm {
+	border-radius: 50px !important;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+		Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.swal2-popup {
+	border-radius: 50px !important;
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+		rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+	padding: 2vw !important;
+}
+
+.swal2-content,
+.swal2-title {
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+		Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.swal2-title {
+	color: #278a8d !important;
+}
+
+.swal2-confirm {
+	transition: 0.4s !important;
+	background-color: #01d661 !important;
+}
+
+.swal2-confirm:hover {
+	transition: 0.4s !important;
+}
+
+.swal2-cancel {
+	border-radius: 50px !important;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+		Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	background-color: #278a8d !important;
+}
+
+.swal2-input {
+	background: #fff !important;
+	padding: 1vw !important;
+	border: none !important;
+	box-shadow: none !important;
+	width: 20vw !important;
+	border-bottom: 1px solid silver !important;
+	border-radius: 5px !important;
+	transition: 0.2s !important;
+}
+
+.swal2-input:focus {
+	border: none !important;
+	border-bottom: 2px solid #2caf67 !important;
+	transition: 0.2s !important;
+}
+
 .loginContainer {
 	margin: 0 auto;
 	width: 100%;
@@ -513,6 +569,7 @@ h3 {
 .changePasswordCard h2 {
 	color: #33be77;
 	margin-top: -1vw;
+	font-size: 1.25vw;
 }
 
 .changePasswordCardInnerContent {
@@ -680,9 +737,9 @@ h3 {
 }
 
 .deleteCommentIcon {
-	color: #fff!important;
-	cursor: pointer!important;
-	font-size: 1.5vw!important;
+	color: #fff !important;
+	cursor: pointer !important;
+	font-size: 1.5vw !important;
 	position: absolute;
 	margin-top: -9vw;
 	background-color: #2caf67;
@@ -718,12 +775,12 @@ h3 {
 	display: none !important;
 	font-size: 1.5vw !important;
 	position: relative;
-	right: 15vw;
-	bottom: 0.5vw;
+	left: -1vw;
+	bottom: 1vw;
 }
 
 .postTitle:hover .editTitleIcon {
-	display: block !important;	
+	display: block !important;
 }
 
 .editContentIcon {
@@ -764,7 +821,7 @@ h3 {
 		text-align: center;
 		margin-top: 12vw;
 	}
-	
+
 	.headerDiv h1 {
 		color: #33be77;
 		font-weight: 900;
@@ -785,7 +842,7 @@ h3 {
 		align-items: center;
 		flex-direction: column;
 	}
-	
+
 	.inputLabel {
 		position: relative;
 		margin-right: 35vw;
@@ -793,7 +850,7 @@ h3 {
 		font-weight: bold;
 		font-size: 3vw;
 	}
-	
+
 	.loginInput {
 		width: 45vw;
 		background: #fff;
@@ -804,7 +861,7 @@ h3 {
 		border-radius: 5px;
 		transition: 0.2s;
 	}
-	
+
 	.loginCardRightSide {
 		background-image: linear-gradient(
 			109.6deg,
@@ -852,5 +909,398 @@ h3 {
 		width: 35vw;
 		font-size: 3.2vw;
 		transition: 0.4s;
+	}
+
+	.navbar {
+		display: flex;
+		align-items: center;
+		flex-direction: row-reverse;
+		justify-content: right;
+		margin: 0;
+		padding: 0;
+		height: 15vw;
+		width: 100%;
+		background-image: linear-gradient(
+			109.6deg,
+			rgba(96, 221, 142, 1) 11.2%,
+			rgba(24, 138, 141, 1) 91.1%
+		);
+	}
+
+	.nameAndLogout {
+		margin-right: 8vw;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
+
+	.nameAndLogout h1 {
+		font-size: 5vw;
+	}
+
+	.logoutButton {
+		border: none;
+		padding: 2.5vw;
+		width: 22vw;
+		cursor: pointer;
+		border-radius: 50px;
+		background: transparent;
+		border: 1px solid #fff;
+		color: #fff;
+		font-size: 2.5vw;
+		font-weight: bold;
+		transition: 0.4s;
+		text-transform: uppercase;
+	}
+
+	.homeAndCreatePost {
+		display: flex;
+		right: 18vw;
+		position: relative;
+		align-content: space-between;
+		align-items: center;
+		justify-content: center;
+		padding-left: 6vw;
+	}
+
+	.homeIcon {
+		color: #fff;
+		font-size: 10vw !important;
+		margin: 3vw;
+	}
+
+	.links {
+		display: none;
+	}
+
+	.homePageContainer h1,
+	.createPostContainer h1,
+	.pageNotFoundContainer h1,
+	.profilePageContainer h1,
+	.changePasswordContainer h1,
+	.postPageContainer h1 {
+		margin: 0;
+		color: #fff;
+		text-align: right;
+		margin-right: 3vw;
+	}
+
+	.postDiv {
+		width: 60vw;
+		height: 40vw;
+		margin-top: 10vw;
+		margin-bottom: 2.6vw;
+		padding: 8vw;
+	}
+
+	.postTitle {
+		flex: 10%;
+		font-size: 4.2vw;
+	}
+
+	.postContent {
+		font-size: 3.5vw;
+		flex: 95%;
+	}
+
+	.postFooter {
+		flex: 20%;
+		font-size: 3vw;
+		display: flex;
+		position: relative;
+		flex-direction: column;
+	}
+
+	.postDate {
+		margin-top: 4vw;
+		font-size: 3vw;
+	}
+
+	.likeButton {
+		position: absolute;
+		right: 1.2vw;
+		bottom: 0.4vw !important;
+		font-size: 7vw !important;
+		cursor: pointer;
+	}
+
+	.username {
+		padding: 1vw 3vw;
+		font-size: 2.5vw;
+		transition: 0.4s;
+	}
+
+	.commentCounterDiv label {
+		position: absolute;
+		right: 11vw;
+	}
+
+	.commentsIcon {
+		position: absolute;
+		left: 40vw;
+		bottom: 0.25vw !important;
+		font-size: 7vw !important;
+		cursor: pointer;
+	}
+
+	.createPostFormDiv {
+		width: 60vw;
+		height: auto;
+		padding: 10vw;
+		margin-top: 30vw;
+	}
+
+	.createPostContainerForm {
+		width: 45vw;
+		height: auto;
+	}
+
+	.createPostContainerForm label {
+		margin-top: 3vw;
+		font-size: 3.5vw;
+	}
+
+	.createPostContainerForm #inputCreatePost {
+		border: none;
+		padding: 3vw;
+		font-size: 3.5vw;
+		border-bottom: 1px solid silver;
+	}
+
+	.createPostContainerForm #inputCreatePost:focus {
+		border-bottom: 2px solid #2caf67;
+		transition: 0.2s;
+	}
+
+	.createPostContainerForm button {
+		margin-top: 12vw;
+		padding: 3vw;
+		width: 32vw;
+		font-size: 2.4vw;
+		text-transform: uppercase;
+		box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+		transition: 0.4s;
+	}
+
+	.createPostContainerForm button:hover {
+		transition: 0.4s !important;
+		box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.185);
+		opacity: 0.8;
+	}
+
+	h3 {
+		margin: 0;
+		margin-left: 2vw;
+		margin-top: 2vw;
+		padding: 0;
+		font-size: 3vw;
+		color: #ee4b2b;
+	}
+
+	.basicInfoContainer {
+		margin-top: 10vw;
+		color: #278a8d;
+	}
+
+	.basicInfoContainer h2 {
+		font-size: 4.5vw;
+	}
+
+	.userPostsTitleDiv {
+		margin-top: 2vw;
+	}
+
+	.userPostsTitleDiv h2 {
+		color: #278a8d;
+		font-size: 4vw;
+	}
+
+	.editCredentialsIcon {
+		cursor: pointer !important;
+		font-size: 4.5vw !important;
+		margin-left: 0.5vw;
+		margin-top: -0.5vw !important;
+		position: absolute;
+	}
+
+	.changePasswordCard {
+		width: 60vw;
+		height: auto;
+		padding: 10vw;
+		margin: 0 auto;
+		margin-top: 20vw;
+	}
+
+	.changePasswordCard h2 {
+		color: #33be77;
+		margin-top: 2vw;
+		font-size: 4vw;
+	}
+
+	.changePasswordCardInnerContent {
+		margin-top: 1vw;
+	}
+
+	.changePasswordInput {
+		border: none;
+		padding: 3vw;
+		font-size: 3vw;
+		border-bottom: 1px solid silver;
+		outline: none;
+		transition: 0.2s;
+		margin: 2vw;
+		color: #00ca5b;
+		width: 30vw;
+		text-align: center;
+	}
+
+	.changePasswordSubmitButton {
+		margin-top: 10vw !important;
+		border: none;
+		padding: 2.5vw 8vw;
+		font-size: 2.7vw;
+		text-transform: uppercase;
+		margin-top: 2vw;
+		cursor: pointer;
+		border-radius: 50px;
+		font-weight: bold;
+		transition: 0.4s;
+		border: 1.5px solid #01d661;
+		color: #01d661;
+		background-color: #fff;
+	}
+
+	.changePasswordSubmitButton:hover {
+		background: #fff;
+		transition: 0.4s;
+		background-color: #36c977;
+		color: #fff;
+		border: none;
+		box-shadow: 0 5px 10px rgba(159, 165, 190, 0.274),
+			0 15px 40px rgba(166, 173, 201, .2);
+	}
+
+	.changeUsernameDiv {
+		margin-bottom: 3vw;
+	}
+
+	.changeUsernameInput {
+		margin-top: -1vw;
+	}
+
+	.postCommentContainer {
+		flex-direction: column;
+	}
+
+	.rightSide {
+		padding-top: 6vw;
+	}
+
+	.addCommentContainer h2 {
+		color: #33be77;
+		font-size: 4vw;
+	}
+
+	.commentInput {
+		padding: 2vw;
+		font-size: 4vw;
+		margin-top: 1vw;
+		width: 46vw;
+	}
+
+	.addCommentButton {
+		margin-top: 8vw !important;
+		margin-top: 3vw;
+		padding: 2.5vw;
+		width: 32vw;
+		font-size: 2.6vw;
+	}
+
+	.commentCard {
+		width: 40vw;
+		padding: 10vw;
+		margin-top: 10vw;
+	}
+
+	.commentContent {
+		margin-top: -2vw;
+		font-size: 4vw;
+	}
+
+	.commentFooter {
+		color: #278a8d;
+		margin-top: 4vw;
+		margin-left: -3vw;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+
+	.commentFooter span {
+		font-size: 3vw;
+	}
+
+	.deleteCommentIcon {
+		color: #fff !important;
+		cursor: pointer !important;
+		font-size: 7vw !important;
+		position: absolute;
+		margin-top: -27vw;
+		background-color: #2caf67;
+		padding: 3vw;
+		width: 4vw;
+		height: 4vw;
+		text-align: center;
+		margin-left: 43.5vw;
+	}
+
+	.deleteCommentIcon span {
+		position: relative;
+		bottom: 3vw !important;
+	}
+
+	.deleteCommentIcon:hover {
+		background-color: #06ce60;
+		transition: 0.4s;
+	}
+
+	.editTitleIcon {
+		font-size: 5vw !important;
+		position: relative;
+		left: 1vw;
+		bottom: 4vw;
+		display: block !important;
+	}
+
+	.editContentIcon {
+		display: block !important;
+		position: absolute;
+		font-size: 5vw !important;
+		margin-top: 4vw !important;
+		margin-left: 50vw !important;
+	}
+
+	.swal2-popup {
+		border-radius: 50px !important;
+		box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+			rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+		padding: 12vw !important;
+	}
+
+	.swal2-input {
+		background: #fff !important;
+		padding: 1vw !important;
+		border: none !important;
+		box-shadow: none !important;
+		width: 60vw !important;
+		border-bottom: 1px solid silver !important;
+		border-radius: 5px !important;
+		transition: 0.2s !important;
+	}
+	
+	.swal2-input:focus {
+		border: none !important;
+		border-bottom: 2px solid #2caf67 !important;
+		transition: 0.2s !important;
 	}
 }

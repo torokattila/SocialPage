@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { AuthContext } from "../helpers/AuthContext";
+import Swal from "sweetalert2";
 
 function Login() {
 	const [username, setUsername] = useState("");
@@ -15,7 +16,11 @@ function Login() {
 
 		axios.post('http://localhost:3001/api/loginuser', data).then(response => {
 			if (response.data.error) {
-				alert(response.data.error);
+				Swal.fire({
+					title: "",
+					text: response.data.error,
+					type: "error",
+				});
 			} else {
 				localStorage.setItem('accessToken', response.data.token);
 				setAuthState({

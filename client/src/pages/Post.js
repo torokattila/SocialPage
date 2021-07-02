@@ -6,6 +6,7 @@ import Navbar from "../shared/Navbar";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import Tooltip from "@material-ui/core/Tooltip";
+import Swal from "sweetalert2";
 
 function Post() {
 	let { id } = useParams();
@@ -47,7 +48,11 @@ function Post() {
 			)
 			.then(response => {
 				if (response.data.error) {
-					alert("Login is required to comment!");
+					Swal.fire({
+						title: "",
+						text: response.data.error,
+						type: "error"
+					});
 				} else {
 					const commentToAdd = {
 						content: response.data.commentContent,
@@ -62,59 +67,18 @@ function Post() {
 	};
 
 	const deleteComment = commentId => {
-		if (window.confirm("Do you want to delete your comment?")) {
-			axios
-				.delete(`http://localhost:3001/deletecomment/${commentId}`, {
-					headers: {
-						accessToken: localStorage.getItem("accessToken")
-					}
-				})
-				.then(response => {
-					if (response.data.error) {
-						alert(response.data.error);
-					} else {
-						setComments(
-							comments.filter(comment => {
-								return comment.id !== commentId;
-							})
-						);
-						window.location.reload();
-					}
-				});
-		}
-	};
-
-	const deletePost = postId => {
-		if (window.confirm("Do you want to delete this post?")) {
-			axios
-				.delete(`http://localhost:3001/deletepost/${postId}`, {
-					headers: {
-						accessToken: localStorage.getItem("accessToken")
-					}
-				})
-				.then(response => {
-					if (response.data.error) {
-						alert(response.data.error);
-					} else {
-						alert(response.data);
-						history.push("/");
-					}
-				});
-		}
-	};
-
-	const editPost = option => {
-		if (option === "title") {
-			let newTitle = prompt("Enter the new title:");
-
-			if (newTitle) {
+		Swal.fire({
+			title: "Are you sure?",
+			text: "Do you want to delete your comment?",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "Yes!"
+		}).then(response => {
+			if (response.value) {
 				axios
-					.put(
-						"http://localhost:3001/edittitle",
-						{
-							newTitle: newTitle,
-							postId: id
-						},
+					.delete(
+						`http://localhost:3001/deletecomment/${commentId}`,
 						{
 							headers: {
 								accessToken: localStorage.getItem("accessToken")
@@ -123,23 +87,113 @@ function Post() {
 					)
 					.then(response => {
 						if (response.data.error) {
-							alert(
-								"We were unable to update the title, please try again!"
-							);
+							alert(response.data.error);
 						} else {
-							setPostObject({ ...postObject, title: newTitle });
+							setComments(
+								comments.filter(comment => {
+									return comment.id !== commentId;
+								})
+							);
+							window.location.reload();
 						}
 					});
 			}
-		} else {
-			let newPostContent = prompt("Enter the new content of the post:");
+		});
+	};
 
-			if (newPostContent) {
+	const deletePost = postId => {
+		Swal.fire({
+			title: "Are you sure?",
+			text: "Do you want to delete your post?",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "Yes!"
+		}).then(confirmResponse => {
+			if (confirmResponse.value) {
 				axios
+					.delete(`http://localhost:3001/deletepost/${postId}`, {
+						headers: {
+							accessToken: localStorage.getItem("accessToken")
+						}
+					})
+					.then(response => {
+						if (response.data.error) {
+							Swal.fire({
+								title: "",
+								text: response.data.error,
+								type: "error"
+							});
+						} else {
+							console.log(response);
+							Swal.fire({
+								title: "",
+								text: response.data,
+								type: "success"
+							}).then(alertResponse => {
+								if (alertResponse.value) {
+									history.push("/");
+								}
+							});
+						}
+					});
+			}
+		});
+	};
+
+	const editPost = option => {
+		if (option === "title") {
+			Swal.fire({
+				title: "Enter the new title:",
+				input: "text",
+				showCancelButton: true,
+				closeOnConfirm: true,
+				inputPlaceholder: "Your new title"
+			}).then(inputResponse => {
+				if (inputResponse.value) {
+					axios
+						.put(
+							"http://localhost:3001/edittitle",
+							{
+								newTitle: inputResponse.value,
+								postId: id
+							},
+							{
+								headers: {
+									accessToken: localStorage.getItem(
+										"accessToken"
+									)
+								}
+							}
+						)
+						.then(response => {
+							if (response.data.error) {
+								alert(
+									"We were unable to update the title, please try again!"
+								);
+							} else {
+								setPostObject({
+									...postObject,
+									title: inputResponse.value
+								});
+							}
+						});
+				}
+			});
+		} else {
+			Swal.fire({
+				title: "Enter the new content of the post:",
+				input: "text",
+				showCancelButton: true,
+				closeOnConfirm: true,
+				inputPlaceholder: "Your new content"
+			}).then(inputResponse => {
+				if (inputResponse.value) {
+					axios
 					.put(
 						"http://localhost:3001/editcontent",
 						{
-							newContent: newPostContent,
+							newContent: inputResponse.value,
 							postId: id
 						},
 						{
@@ -156,11 +210,12 @@ function Post() {
 						} else {
 							setPostObject({
 								...postObject,
-								content: newPostContent
+								content: inputResponse.value
 							});
 						}
 					});
-			}
+				}
+			});
 		}
 	};
 
@@ -269,7 +324,7 @@ function Post() {
 												deleteComment(comment.id);
 											}}
 										>
-											x
+											<span>x</span>
 										</div>}
 									<div className="commentContent">
 										<span>
