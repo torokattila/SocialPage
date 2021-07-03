@@ -795,6 +795,22 @@ h3 {
 	display: block !important;
 }
 
+.commentLikeButton {
+	color: #36c977 !important;
+	font-size: 2vw !important;
+	position: relative;
+	bottom: 0.5vw !important;
+	left: 2.5vw !important;
+	cursor: pointer !important;
+}
+
+.commentLikeButtonDiv label {
+	position: relative;
+	left: 2.5vw;
+	bottom: 0.3vw;
+	font-size: 1vw;
+}
+
 @media only screen and (max-width: 600px) {
 	.loginCard {
 		display: flex;
@@ -1302,5 +1318,21 @@ h3 {
 		border: none !important;
 		border-bottom: 2px solid #2caf67 !important;
 		transition: 0.2s !important;
+	}
+
+	.commentLikeButton {
+		color: #36c977 !important;
+		font-size: 5vw !important;
+		position: relative;
+		bottom: -0.5vw !important;
+		left: 2.5vw !important;
+		cursor: pointer !important;
+	}
+	
+	.commentLikeButtonDiv label {
+		position: relative;
+		left: 2.5vw;
+		bottom: -1vw;
+		font-size: 3vw;
 	}
 }

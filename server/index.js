@@ -32,7 +32,7 @@ const saltRounds = 10;
 
 app.post("/api/registeruser", (req, res) => {
 	const { username, password } = req.body;
-	
+
 	db.query(
 		"SELECT username FROM user WHERE username = ?",
 		username,
@@ -266,6 +266,54 @@ app.post("/like", validateToken, (req, res) => {
 	});
 });
 
+app.post("/commentlike", validateToken, (req, res) => {
+	const { commentId } = req.body;
+	const userId = req.user.id;
+
+	const selectTheCommentLike =
+		"SELECT * FROM comment_likes WHERE comment_id = ? AND user_id = ?";
+
+	db.query(selectTheCommentLike, [commentId, userId], (error, result) => {
+		if (result.length > 0) {
+			const deleteQuery =
+				"DELETE FROM comment_likes WHERE comment_id = ? AND user_id = ?";
+
+			db.query(
+				deleteQuery,
+				[commentId, userId],
+				(deleteError, deleteResult) => {
+					if (deleteError) {
+						console.log(deleteError);
+						res.json({
+							error: "There was an error with the dislike!"
+						});
+					} else if (deleteResult) {
+						res.json({ isLiked: false });
+					}
+				}
+			);
+		} else {
+			const insertCommentLikeQuery =
+				"INSERT INTO comment_likes SET comment_id = ?, user_id = ?";
+
+			db.query(
+				insertCommentLikeQuery,
+				[commentId, userId],
+				(insertError, insertResult) => {
+					if (insertError) {
+						console.log(insertError);
+						res.json({
+							error: "There was an error with the liking!"
+						});
+					} else if (insertResult) {
+						res.json({ isLiked: true });
+					}
+				}
+			);
+		}
+	});
+});
+
 app.get("/info/:id", (req, res) => {
 	const userId = req.params.id;
 
@@ -457,25 +505,69 @@ app.post("/comment", validateToken, (req, res) => {
 	}
 });
 
-app.get("/comments/:postId", (req, res) => {
+app.get("/comments/:postId", validateToken, (req, res) => {
 	const postId = req.params.postId;
+	const userId = req.user.id;
 	const getSpecificCommentsQuery =
-		"SELECT * FROM comments WHERE post_id = ? ORDER BY created_at DESC";
+		"SELECT comments.id, comments.post_id, comments.user_id, comments.username, comments.created_at, comments.content, IFNULL(GROUP_CONCAT(comment_likes.comment_id), '') AS Likes, IFNULL(GROUP_CONCAT(comment_likes.user_id), '') AS comment_like_user_id FROM comments AS comments LEFT OUTER JOIN comment_likes AS comment_likes ON comments.id = comment_likes.comment_id WHERE comments.post_id = ? GROUP BY comments.id ORDER BY comments.created_at DESC";
+	const selectCommentLikesQuery =
+		"SELECT * FROM comment_likes WHERE user_id = ?;";
 
 	db.query(getSpecificCommentsQuery, postId, (error, result) => {
 		if (error) {
 			console.log(error);
+			res.json({
+				error: "There was an error with getting the comments!"
+			});
 		} else if (result) {
-			res.json(JSON.parse(JSON.stringify(result)));
+			var listOfComments = JSON.parse(JSON.stringify(result));
+			var likedComments = [];
+
+			listOfComments = listOfComments.map(comment => {
+				comment.Likes =
+					comment.Likes == ""
+						? []
+						: comment.Likes.includes(",")
+							? comment.Likes.split(",")
+							: [comment.Likes];
+
+				comment.comment_like_user_id =
+					comment.comment_like_user_id == ""
+						? []
+						: comment.comment_like_user_id.includes(",")
+							? comment.comment_like_user_id
+									.split(",")
+									.map(userid => Number(userid))
+							: [Number(comment.like_user_id)];
+
+				return comment;
+			});
+
+			db.query(
+				selectCommentLikesQuery,
+				userId,
+				(commentLikeError, commentLikeResult) => {
+					if (commentLikeResult.length > 0) {
+						likedComments = JSON.parse(
+							JSON.stringify(commentLikeResult)
+						);
+					}
+
+					res.json({
+						listOfComments: listOfComments,
+						likedComments: likedComments
+					});
+				}
+			);
 		}
 	});
 });
 
 app.delete("/deletecomment/:commentId", validateToken, (req, res) => {
 	const commentId = req.params.commentId;
-	const deleteCommentQuery = "DELETE FROM comments WHERE id = ?";
+	const deleteCommentQuery = "DELETE FROM comments WHERE id = ?; DELETE FROM comment_likes WHERE comment_id = ?;";
 
-	db.query(deleteCommentQuery, commentId, (error, result) => {
+	db.query(deleteCommentQuery, [commentId, commentId], (error, result) => {
 		if (error) {
 			console.log(error);
 			res.json({ error: "There is no comment with this id!" });
@@ -487,7 +579,8 @@ app.delete("/deletecomment/:commentId", validateToken, (req, res) => {
 
 app.delete("/deletepost/:postId", validateToken, (req, res) => {
 	const postId = req.params.postId;
-	const deletePostQuery = "DELETE FROM post WHERE post_id = ?; DELETE FROM likes WHERE post_id = ?; DELETE FROM comments WHERE post_id = ?;"
+	const deletePostQuery =
+		"DELETE FROM post WHERE post_id = ?; DELETE FROM likes WHERE post_id = ?; DELETE FROM comments WHERE post_id = ?;";
 
 	db.query(deletePostQuery, [postId, postId, postId], (error, result) => {
 		if (error) {

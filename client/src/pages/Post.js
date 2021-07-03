@@ -5,6 +5,8 @@ import axios from "axios";
 import Navbar from "../shared/Navbar";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
+import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import FavoriteIcon from "@material-ui/icons/Favorite";
 import Tooltip from "@material-ui/core/Tooltip";
 import Swal from "sweetalert2";
 
@@ -13,6 +15,7 @@ function Post() {
 	const [postObject, setPostObject] = useState({});
 	const [comments, setComments] = useState([]);
 	const [newComment, setNewComment] = useState("");
+	const [likedComments, setLikedComments] = useState([]);
 	const { authState } = useContext(AuthContext);
 	let history = useHistory();
 
@@ -24,9 +27,20 @@ function Post() {
 					setPostObject(response.data);
 				});
 
-			axios.get(`http://localhost:3001/comments/${id}`).then(response => {
-				setComments(response.data);
-			});
+			axios
+				.get(`http://localhost:3001/comments/${id}`, {
+					headers: {
+						accessToken: localStorage.getItem("accessToken")
+					}
+				})
+				.then(response => {
+					setComments(response.data.listOfComments);
+					setLikedComments(
+						response.data.likedComments.map(likedComment => {
+							return likedComment.comment_id;
+						})
+					);
+				});
 		},
 		[id]
 	);
@@ -56,7 +70,8 @@ function Post() {
 				} else {
 					const commentToAdd = {
 						content: response.data.commentContent,
-						username: response.data.username
+						username: response.data.username,
+						Likes: []
 					};
 
 					setComments([...comments, commentToAdd]);
@@ -190,33 +205,81 @@ function Post() {
 			}).then(inputResponse => {
 				if (inputResponse.value) {
 					axios
-					.put(
-						"http://localhost:3001/editcontent",
-						{
-							newContent: inputResponse.value,
-							postId: id
-						},
-						{
-							headers: {
-								accessToken: localStorage.getItem("accessToken")
+						.put(
+							"http://localhost:3001/editcontent",
+							{
+								newContent: inputResponse.value,
+								postId: id
+							},
+							{
+								headers: {
+									accessToken: localStorage.getItem(
+										"accessToken"
+									)
+								}
 							}
-						}
-					)
-					.then(response => {
-						if (response.data.error) {
-							alert(
-								"We were unable to update the content, please try again!"
-							);
-						} else {
-							setPostObject({
-								...postObject,
-								content: inputResponse.value
-							});
-						}
-					});
+						)
+						.then(response => {
+							if (response.data.error) {
+								alert(
+									"We were unable to update the content, please try again!"
+								);
+							} else {
+								setPostObject({
+									...postObject,
+									content: inputResponse.value
+								});
+							}
+						});
 				}
 			});
 		}
+	};
+
+	const likeComment = commentId => {
+		axios
+			.post(
+				`http://localhost:3001/commentlike`,
+				{
+					commentId: commentId
+				},
+				{
+					headers: {
+						accessToken: localStorage.getItem("accessToken")
+					}
+				}
+			)
+			.then(response => {
+				setComments(
+					comments.map(comment => {
+						if (comment.id === commentId) {
+							if (response.data.isLiked) {
+								return {
+									...comment,
+									Likes: [...comment.Likes, 0]
+								};
+							} else {
+								const commentLikesArray = comment.Likes;
+								commentLikesArray.pop();
+
+								return { ...comment, Likes: commentLikesArray };
+							}
+						} else {
+							return comment;
+						}
+					})
+				);
+
+				if (likedComments.includes(commentId)) {
+					setLikedComments(
+						likedComments.filter(id => {
+							return id != commentId;
+						})
+					);
+				} else {
+					setLikedComments([...likedComments, commentId]);
+				}
+			});
 	};
 
 	return (
@@ -337,6 +400,29 @@ function Post() {
 											<span>
 												{comment.username}
 											</span>
+										</div>
+
+										<div className="commentLikeButtonDiv">
+											{likedComments.includes(comment.id)
+												? <FavoriteIcon
+														className="commentLikeButton"
+														onClick={() => {
+															likeComment(
+																comment.id
+															);
+														}}
+													/>
+												: <FavoriteBorderIcon
+														className="commentLikeButton"
+														onClick={() => {
+															likeComment(
+																comment.id
+															);
+														}}
+													/>}
+											<label>
+												{comment.Likes.length}
+											</label>
 										</div>
 									</div>
 								</div>
