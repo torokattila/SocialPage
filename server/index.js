@@ -28,6 +28,61 @@ const db = mysql.createPool({
 	multipleStatements: true
 });
 
+setInterval(function() {
+	db.query("SELECT 1");
+}, 4500);
+
+db.query("USE " + db.database);
+
+db.query(
+	"CREATE TABLE IF NOT EXISTS `user`" +
+		"(" +
+		"`id` int(6) unsigned AUTO_INCREMENT PRIMARY KEY, " +
+		"`username` varchar(50), " +
+		"`password` varchar(255), " +
+		"`postId` int(6) unsigned, " +
+		"`commentId` int(6) unsigned " +
+		");"
+);
+
+db.query(
+	"CREATE TABLE IF NOT EXISTS `post` ( " +
+		"`post_id` int(6) unsigned AUTO_INCREMENT PRIMARY KEY, " +
+		"`user_id` int(6) unsigned, " +
+		"`title` varchar(255), " +
+		"`content` text, " +
+		"`created_at` datetime, " +
+		"`username` varchar(255) " +
+		");"
+);
+
+db.query(
+	"CREATE TABLE IF NOT EXISTS `likes` ( " +
+		"`like_id` int(6) unsigned AUTO_INCREMENT PRIMARY KEY, " +
+		"`post_id` int(6) unsigned, " +
+		"`user_id` int(6) unsigned " +
+		");"
+);
+
+db.query(
+	"CREATE TABLE IF NOT EXISTS `comments` ( " + 
+	"`id` int(6) unsigned AUTO_INCREMENT PRIMARY KEY, " + 
+	"`post_id` int(6) unsigned, " + 
+	"`user_id` int(6) unsigned," + 
+	"`username` varchar(255), " + 
+	"`created_at` datetime, " + 
+	"`content` text " + 
+	");"
+);
+
+db.query(
+	"CREATE TABLE IF NOT EXISTS `comment_likes` ( " + 
+	"`like_id` int(6) unsigned AUTO_INCREMENT PRIMARY KEY, " + 
+	"`comment_id` int(6) unsigned, " + 
+	"`user_id` int(6) unsigned " + 
+	");"
+);
+
 const saltRounds = 10;
 
 app.post("/api/registeruser", (req, res) => {
@@ -565,7 +620,8 @@ app.get("/comments/:postId", validateToken, (req, res) => {
 
 app.delete("/deletecomment/:commentId", validateToken, (req, res) => {
 	const commentId = req.params.commentId;
-	const deleteCommentQuery = "DELETE FROM comments WHERE id = ?; DELETE FROM comment_likes WHERE comment_id = ?;";
+	const deleteCommentQuery =
+		"DELETE FROM comments WHERE id = ?; DELETE FROM comment_likes WHERE comment_id = ?;";
 
 	db.query(deleteCommentQuery, [commentId, commentId], (error, result) => {
 		if (error) {
