@@ -22,11 +22,16 @@ function ChangeCredentials() {
 			confirmButtonText: "Yes!"
 		}).then(response => {
 			if (response.value) {
-				if (newUsername === "" && oldPassword === "" && newPassword === "") {
+				if (
+					newUsername === "" &&
+					oldPassword === "" &&
+					newPassword === ""
+				) {
 					Swal.fire({
 						title: "",
-						text: "If you want to change your credentials, fill the username field and/or the two password fields below!",
-						type: "error",
+						text:
+							"If you want to change your credentials, fill the username field and/or the two password fields below!",
+						type: "error"
 					});
 					return;
 				} else {
@@ -41,7 +46,9 @@ function ChangeCredentials() {
 							},
 							{
 								headers: {
-									accessToken: localStorage.getItem("accessToken")
+									accessToken: localStorage.getItem(
+										"accessToken"
+									)
 								}
 							}
 						)
@@ -50,13 +57,13 @@ function ChangeCredentials() {
 								Swal.fire({
 									title: "",
 									text: response.data.error,
-									type: "error",
+									type: "error"
 								});
 							} else {
 								Swal.fire({
 									title: "",
 									text: response.data.successMessage,
-									type: "success",
+									type: "success"
 								}).then(response => {
 									if (response.value) {
 										history.push("/");
@@ -70,25 +77,53 @@ function ChangeCredentials() {
 		});
 	};
 
+	const deleteProfile = () => {
+		Swal.fire({
+			title: "Are you sure?",
+			text: "Do you want to delete your profile?",
+			showCancelButton: true,
+			confirmButtonText: "Yes, delete!"
+		}).then(response => {
+			if (response.value) {
+				axios.delete("http://localhost:3001/deleteuser", {
+					headers: {
+						accessToken: localStorage.getItem("accessToken")
+					}
+				}).then(deleteResponse => {
+					if (deleteResponse.data.error) {
+						Swal.fire({
+							title: "",
+							text: deleteResponse.data.error,
+							type: "error"
+						});
+					} else {
+						localStorage.removeItem("accessToken");
+						window.location.reload();
+					}
+				});
+			}
+		})
+	};
+
 	return (
 		<div className="changePasswordContainer">
 			<NavBar />
 			<div className="changePasswordCard" align="center">
 				<h2>Change Username:</h2>
 				<div className="changeUsernameDiv">
-				<form autoComplete="off">
-					<input
-						type="text"
-						className="changePasswordInput changeUsernameInput"
-						value={authState.username}
-					/>
-					<input
-						className="changePasswordInput changeUsernameInput"
-						placeholder="New username"
-						onChange={event => {
-							setNewUsername(event.target.value);
-						}}
-					/>
+					<form autoComplete="off">
+						<input
+							type="text"
+							className="changePasswordInput changeUsernameInput"
+							value={authState.username}
+						/>
+						<input
+							className="changePasswordInput changeUsernameInput"
+							placeholder="New username"
+							onChange={event => {
+								setNewUsername(event.target.value);
+							}}
+						/>
 					</form>
 				</div>
 
@@ -122,6 +157,14 @@ function ChangeCredentials() {
 							onClick={changeCredentials}
 						>
 							Save Changes
+						</button>
+					</div>
+					<div>
+						<button
+							className="deleteProfileButton"
+							onClick={deleteProfile}
+						>
+							Delete profile
 						</button>
 					</div>
 				</div>

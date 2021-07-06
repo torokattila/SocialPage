@@ -811,6 +811,64 @@ h3 {
 	font-size: 1vw;
 }
 
+.noPostsDiv {
+	position: relative;
+	top: 15vw;
+}
+
+.noPostsDiv p {
+	font-size: 2vw !important;
+	color: #278a8d;
+}
+
+.homePageCreatePostButton {
+	margin-top: 0.5vw !important;
+	border: none;
+	padding: 1vw 3.5vw;
+	font-size: 1vw;
+	text-transform: uppercase;
+	margin-top: 2vw;
+	cursor: pointer;
+	border-radius: 50px;
+	font-weight: bold;
+	transition: 0.4s;
+	border: 1.5px solid #01d661;
+	color: #01d661;
+	background-color: #fff;
+}
+
+.homePageCreatePostButton:hover {
+	transition: 0.4s;
+	background-color: #36c977;
+	color: #fff;
+	border: none;
+	box-shadow: 0 5px 10px rgba(159, 165, 190, 0.274),
+		0 15px 40px rgba(166, 173, 201, .2);
+}
+
+.deleteProfileButton {
+	margin-top: 2vw !important;
+	border: none;
+	padding: 1vw 3.5vw;
+	font-size: 1vw;
+	text-transform: uppercase;
+	margin-top: 2vw;
+	cursor: pointer;
+	border-radius: 50px;
+	font-weight: bold;
+	transition: 0.4s;
+	border: 1.5px solid #FF1744;
+	color: #FF1744;
+	background-color: #fff;
+}
+
+.deleteProfileButton:hover {
+	transition: 0.4s;
+	border: none;
+	color: #fff;
+	background-color: #FF1744;
+}
+
 @media only screen and (max-width: 600px) {
 	.loginCard {
 		display: flex;
@@ -1334,5 +1392,35 @@ h3 {
 		left: 2.5vw;
 		bottom: -1vw;
 		font-size: 3vw;
+	}
+
+	.noPostsDiv p {
+		font-size: 5vw !important;
+		color: #278a8d;
+	}
+	
+	.homePageCreatePostButton {
+		margin-top: 0.5vw !important;
+		border: none;
+		padding: 2.5vw 8vw;
+		font-size: 2.7vw;
+		text-transform: uppercase;
+		margin-top: 2vw;
+		cursor: pointer;
+		font-weight: bold;
+		transition: 0.4s;
+		border: 1.5px solid #01d661;
+	}
+
+	.deleteProfileButton {
+		margin-top: 5vw !important;
+		border: none;
+		padding: 2.5vw 8vw;
+		font-size: 2.7vw;
+		text-transform: uppercase;
+		transition: 0.4s;
+		border: 1.5px solid #FF1744;
+		color: #FF1744;
+		background-color: #fff;
 	}
 }

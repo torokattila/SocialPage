@@ -680,6 +680,20 @@ app.put("/editcontent", validateToken, (req, res) => {
 	});
 });
 
+app.delete("/deleteuser", validateToken, (req, res) => {
+	const userId = req.user.id;
+	const deleteUserQuery = "DELETE FROM user WHERE id = ?; DELETE FROM post WHERE user_id = ?; DELETE FROM likes WHERE user_id = ?; DELETE FROM comments WHERE user_id = ?; DELETE FROM comment_likes WHERE user_id = ?";
+
+	db.query(deleteUserQuery, [userId, userId, userId, userId, userId], (error, result) => {
+		if (error) {
+			console.log(error);
+			res.json({ error: "There is no user with this user Id!" });
+		} else if (result) {
+			res.json("Profile deleted!");
+		}
+	});
+});
+
 app.listen(PORT, () => {
 	console.log(`App is listening on PORT ${PORT}`);
 });

@@ -39,12 +39,12 @@ function App() {
 			});
 	}, []);
 
-	return (
-		<div className="App">
-			<AuthContext.Provider value={{ authState, setAuthState }}>
-				<Router>
-					<Switch>
-					{!authState.status ? (
+	if (!authState.status) {
+		return (
+			<div className="App">
+				<AuthContext.Provider value={{authState, setAuthState}}>
+					<Router>
+						<Switch>
 						<>
 						<Login />
 						<Route exact path="/login" component={Login} />
@@ -54,20 +54,29 @@ function App() {
 							component={Registration}
 						/>
 						</>
-					) : (
-						<>
+						</Switch>
+					</Router>
+				</AuthContext.Provider>
+			</div>
+		)
+	} else {
+		return (
+			<div className="App">
+				<AuthContext.Provider value={{authState, setAuthState}}>
+					<Router>
+						<Switch>
 						<Route exact path="/" component={Home} />
 						<Route exact path="/createpost" component={CreatePost} />
 						<Route exact path="/posts/:id" component={Post} />
 						<Route exact path="/profile/:id" component={Profile} />
 						<Route exact path="/changecredentials" component={ChangeCredentials} />
-						</>
-					)}
-					</Switch>
-				</Router>
-			</AuthContext.Provider>
-		</div>
-	);
+						<Route path="*" component={PageNotFound} />
+						</Switch>
+					</Router>
+				</AuthContext.Provider>
+			</div>
+		)
+	}
 }
 
 export default App;

@@ -81,73 +81,90 @@ function Home() {
 	return (
 		<div className="homePageContainer">
 			<Navbar />
-			{listOfPosts.map((post, index) => {
-				return (
-					<div className="postDiv" key={index}>
-						<div className="postTitle">
-							{post.title}
-						</div>
-
-						<div
-							className="postContent"
+			{listOfPosts.length === 0
+				? <div className="noPostsDiv" align="center">
+						<p>Be the first,</p>
+						<button
+							className="homePageCreatePostButton"
 							onClick={() => {
-								history.push(`/posts/${post.post_id}`);
+								history.push("/createpost");
 							}}
 						>
-							{post.content}
-						</div>
-
-						<div className="postFooter">
-							<div className="usernameDiv">
-								<Link
-									className="usernameLink"
-									to={`/profile/${post.user_id}`}
-								>
-									<span className="username">
-										{post.username}
-									</span>
-								</Link>
-							</div>
-							<div className="postDate">
-								{`${new Date(
-									post.created_at
-								).getFullYear()}-${new Date(
-									post.created_at
-								).getMonth() + 1}-${new Date(
-									post.created_at
-								).getDate()}`}
-
-								<div className="commentCounterDiv">
-									<ChatIcon className="commentsIcon" onClick={() => {
-										history.push(`/posts/${post.post_id}`);
-									}} />
-									<label>
-										{post.Comments}
-									</label>
-								</div>
-
-								<div className="likeButtons">
-									{likedPosts.includes(post.post_id)
-										? <FavoriteIcon
-												className="likeButton"
-												onClick={() =>
-													likePost(post.post_id)}
-											/>
-										: <FavoriteBorderIcon
-												className="likeButton"
-												onClick={() => {
-													likePost(post.post_id);
-												}}
-											/>}
-									<label>
-										{post.Likes.length}
-									</label>
-								</div>
-							</div>
-						</div>
+							create a post!
+						</button>
 					</div>
-				);
-			})}
+				: listOfPosts.map((post, index) => {
+						return (
+							<div className="postDiv" key={index}>
+								<div className="postTitle">
+									{post.title}
+								</div>
+
+								<div
+									className="postContent"
+									onClick={() => {
+										history.push(`/posts/${post.post_id}`);
+									}}
+								>
+									{post.content}
+								</div>
+
+								<div className="postFooter">
+									<div className="usernameDiv">
+										<Link
+											className="usernameLink"
+											to={`/profile/${post.user_id}`}
+										>
+											<span className="username">
+												{post.username}
+											</span>
+										</Link>
+									</div>
+									<div className="postDate">
+										{`${new Date(
+											post.created_at
+										).getFullYear()}-${new Date(
+											post.created_at
+										).getMonth() + 1}-${new Date(
+											post.created_at
+										).getDate()}`}
+
+										<div className="commentCounterDiv">
+											<ChatIcon
+												className="commentsIcon"
+												onClick={() => {
+													history.push(
+														`/posts/${post.post_id}`
+													);
+												}}
+											/>
+											<label>
+												{post.Comments}
+											</label>
+										</div>
+
+										<div className="likeButtons">
+											{likedPosts.includes(post.post_id)
+												? <FavoriteIcon
+														className="likeButton"
+														onClick={() =>
+															likePost(post.post_id)}
+													/>
+												: <FavoriteBorderIcon
+														className="likeButton"
+														onClick={() => {
+															likePost(post.post_id);
+														}}
+													/>}
+											<label>
+												{post.Likes.length}
+											</label>
+										</div>
+									</div>
+								</div>
+							</div>
+						);
+					})}
 		</div>
 	);
 }
