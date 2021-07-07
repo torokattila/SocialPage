@@ -78,6 +78,23 @@ function Home() {
 			});
 	};
 
+	const formatDate = date => {
+		let newDate = new Date(date),
+			month = `${newDate.getMonth() + 1}`,
+			day = `${newDate.getDate()}`,
+			year = newDate.getFullYear();
+
+		if (month.length < 2) {
+			month = `0${month}`;
+		}
+
+		if (day.length < 2) {
+			day = `0${day}`;
+		}
+
+		return [year, month, day].join("-");
+	};
+
 	return (
 		<div className="homePageContainer">
 			<Navbar />
@@ -121,14 +138,7 @@ function Home() {
 										</Link>
 									</div>
 									<div className="postDate">
-										{`${new Date(
-											post.created_at
-										).getFullYear()}-${new Date(
-											post.created_at
-										).getMonth() + 1}-${new Date(
-											post.created_at
-										).getDate()}`}
-
+										{formatDate(post.created_at)}
 										<div className="commentCounterDiv">
 											<ChatIcon
 												className="commentsIcon"
