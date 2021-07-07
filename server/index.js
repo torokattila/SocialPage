@@ -65,22 +65,22 @@ db.query(
 );
 
 db.query(
-	"CREATE TABLE IF NOT EXISTS `comments` ( " + 
-	"`id` int(6) unsigned AUTO_INCREMENT PRIMARY KEY, " + 
-	"`post_id` int(6) unsigned, " + 
-	"`user_id` int(6) unsigned," + 
-	"`username` varchar(255), " + 
-	"`created_at` datetime, " + 
-	"`content` text " + 
-	");"
+	"CREATE TABLE IF NOT EXISTS `comments` ( " +
+		"`id` int(6) unsigned AUTO_INCREMENT PRIMARY KEY, " +
+		"`post_id` int(6) unsigned, " +
+		"`user_id` int(6) unsigned," +
+		"`username` varchar(255), " +
+		"`created_at` datetime, " +
+		"`content` text " +
+		");"
 );
 
 db.query(
-	"CREATE TABLE IF NOT EXISTS `comment_likes` ( " + 
-	"`like_id` int(6) unsigned AUTO_INCREMENT PRIMARY KEY, " + 
-	"`comment_id` int(6) unsigned, " + 
-	"`user_id` int(6) unsigned " + 
-	");"
+	"CREATE TABLE IF NOT EXISTS `comment_likes` ( " +
+		"`like_id` int(6) unsigned AUTO_INCREMENT PRIMARY KEY, " +
+		"`comment_id` int(6) unsigned, " +
+		"`user_id` int(6) unsigned " +
+		");"
 );
 
 const saltRounds = 10;
@@ -116,33 +116,25 @@ app.post("/api/registeruser", (req, res) => {
 						(err, result) => {
 							if (err) {
 								console.log(err);
-								res.json(err);
-							}
+								res.json({ error: err });
+							} else if (result) {
+								const accessToken = sign(
+									{ id: result.insertId },
+									"tOkEnSeCrEt"
+								);
 
-							res.json({
-								message: "Successful registration",
-								success: true
-							});
+								res.json({
+									token: accessToken,
+									username: username,
+									id: result.insertId
+								});
+							}
 						}
 					);
 				});
 			}
 		}
 	);
-});
-
-app.get("/auth", validateToken, (req, res) => {
-	const userId = req.user.id;
-	const getUsernameQuery = "SELECT username FROM user WHERE id = ?";
-
-	db.query(getUsernameQuery, userId, (error, result) => {
-		if (error) {
-			console.log(error);
-			res.json({ error: "User does not exist!" });
-		} else if (result.length > 0) {
-			res.json({ user: req.user, username: result[0].username });
-		}
-	});
 });
 
 app.post("/api/loginuser", (req, res) => {
@@ -192,6 +184,20 @@ app.post("/api/loginuser", (req, res) => {
 			}
 		});
 	}
+});
+
+app.get("/auth", validateToken, (req, res) => {
+	const userId = req.user.id;
+	const getUsernameQuery = "SELECT username FROM user WHERE id = ?";
+
+	db.query(getUsernameQuery, userId, (error, result) => {
+		if (error) {
+			console.log(error);
+			res.json({ error: "User does not exist!" });
+		} else if (result.length > 0) {
+			res.json({ user: req.user, username: result[0].username });
+		}
+	});
 });
 
 app.post("/createpost", validateToken, (req, res) => {
@@ -682,16 +688,21 @@ app.put("/editcontent", validateToken, (req, res) => {
 
 app.delete("/deleteuser", validateToken, (req, res) => {
 	const userId = req.user.id;
-	const deleteUserQuery = "DELETE FROM user WHERE id = ?; DELETE FROM post WHERE user_id = ?; DELETE FROM likes WHERE user_id = ?; DELETE FROM comments WHERE user_id = ?; DELETE FROM comment_likes WHERE user_id = ?";
+	const deleteUserQuery =
+		"DELETE FROM user WHERE id = ?; DELETE FROM post WHERE user_id = ?; DELETE FROM likes WHERE user_id = ?; DELETE FROM comments WHERE user_id = ?; DELETE FROM comment_likes WHERE user_id = ?";
 
-	db.query(deleteUserQuery, [userId, userId, userId, userId, userId], (error, result) => {
-		if (error) {
-			console.log(error);
-			res.json({ error: "There is no user with this user Id!" });
-		} else if (result) {
-			res.json("Profile deleted!");
+	db.query(
+		deleteUserQuery,
+		[userId, userId, userId, userId, userId],
+		(error, result) => {
+			if (error) {
+				console.log(error);
+				res.json({ error: "There is no user with this user Id!" });
+			} else if (result) {
+				res.json("Profile deleted!");
+			}
 		}
-	});
+	);
 });
 
 app.listen(PORT, () => {

@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import { AuthContext } from "../helpers/AuthContext";
+import Swal from "sweetalert2";
 
 function Registration() {
 	const initialValues = {
 		username: "",
 		password: ""
 	};
+	const { setAuthState } = useContext(AuthContext);
 
 	const history = useHistory();
 
@@ -27,8 +30,21 @@ function Registration() {
 		axios
 			.post("http://localhost:3001/api/registeruser", data)
 			.then(response => {
-				console.log(response);
-				history.push("/login");
+				if (response.data.error) {
+					Swal.fire({
+						title: "",
+						text: response.data.error,
+						type: "error",
+					});
+				} else {
+					localStorage.setItem('accessToken', response.data.token);
+					setAuthState({
+						username: response.data.username,
+						id: response.data.id,
+						status: true
+					});
+					history.push('/');
+				}
 			});
 	};
 	return (
