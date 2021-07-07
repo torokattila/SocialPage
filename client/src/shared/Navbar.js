@@ -62,7 +62,11 @@ function Navbar() {
 		<div className="navbar">
 			<div className="nameAndLogout">
 				<div>
-					<h1>
+					<h1
+						onClick={() => {
+							history.push("/changecredentials");
+						}}
+					>
 						{authState.username}
 					</h1>
 				</div>

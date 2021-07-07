@@ -294,7 +294,19 @@ h3 {
 }
 
 .nameAndLogout h1 {
-	font-size: 1.5vw;
+	font-size: 1.4vw;
+	cursor: pointer;
+	padding: 0.5vw 1vw;
+	border-radius: 50px;
+	border: 1px solid #fff;
+	text-align: center !important;
+	margin-right: 1.2vw !important;
+}
+
+.nameAndLogout h1:hover {
+	transition: 0.4s;
+	background: #fff;
+	color: #278a8d;
 }
 
 .logoutButton {
@@ -320,8 +332,8 @@ h3 {
 
 .homeAndCreatePost {
 	display: flex;
-	right: 48vw;
-	position: relative;
+	left: 5vw;
+	position: absolute;
 	align-content: space-between;
 	align-items: center;
 	justify-content: center;
@@ -1002,14 +1014,26 @@ h3 {
 	}
 
 	.nameAndLogout {
-		margin-right: 8vw;
+		margin-right: 3vw;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
 	}
 
 	.nameAndLogout h1 {
-		font-size: 5vw;
+		font-size: 3vw;
+		cursor: pointer;
+		padding: 2vw 2vw;
+		border-radius: 50px;
+		border: 1px solid #fff;
+		text-align: center !important;
+		margin-right: 4vw !important;
+	}
+	
+	.nameAndLogout h1:hover {
+		transition: 0.4s;
+		background: #fff;
+		color: #278a8d;
 	}
 
 	.logoutButton {
@@ -1029,18 +1053,16 @@ h3 {
 
 	.homeAndCreatePost {
 		display: flex;
-		right: 18vw;
-		position: relative;
+		position: absolute;
 		align-content: space-between;
 		align-items: center;
 		justify-content: center;
-		padding-left: 6vw;
 	}
 
 	.homeIcon {
 		color: #fff;
 		font-size: 10vw !important;
-		margin: 3vw;
+		margin: 2vw;
 	}
 
 	.links {
