@@ -446,11 +446,11 @@ app.put("/changecredentials", validateToken, (req, res) => {
 				newPassword === ""
 			) {
 				const updateUsernameQuery =
-					"UPDATE user, post SET user.username = ?, post.username = ? WHERE user.id = ? AND post.user_id = ?";
+					"UPDATE user SET username = ? WHERE id = ?; UPDATE post SET username = ? WHERE user_id = ?";
 
 				db.query(
 					updateUsernameQuery,
-					[newUsername, newUsername, userId, userId],
+					[newUsername, userId, newUsername, userId],
 					(usernameUpdateError, usernameUpdateResult) => {
 						if (usernameUpdateError) {
 							console.log(usernameUpdateError);
